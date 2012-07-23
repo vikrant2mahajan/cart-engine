@@ -368,3 +368,33 @@ margin-top: 7px;
     font-size: 14px;
     margin-top: 15px;
 }
+
+.airplane{
+	background: url("images/air_plane.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+
+}
+
+
+.hotels{
+	background: url("images/hotels.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+
+}
+
+.bus_logo{
+	background: url("images/bus-logo.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+
+}
+
+
+.car_logo{
+	background: url("images/car-logo.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+
+}
