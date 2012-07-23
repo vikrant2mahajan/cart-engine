@@ -13,14 +13,18 @@ import com.mmt.hotel.entity.MMTHotelSearchResponse.HotelSearchResults.Hotels.Hot
 import com.mmt.hotel.entity.MMTHotelSearchResponse.HotelSearchResults.Hotels.Hotel.PropertyInfo.Facets.Facet.FacetValues;
 import com.mmt.hotel.entity.MMTHotelSearchResponse.HotelSearchResults.Hotels.Hotel.PropertyInfo.Facets.Facet.FacetValues.FacetValue;
 import com.mmt.hotel.entity.MMTHotelSearchResponse.HotelSearchResults.Hotels.Hotel.PropertyInfo.MediaList;
+import com.mmt.services.product.IRequest;
 
 public class HotelRSParser {
 
 	private MMTHotelSearchResponse body;
+	
+	private IRequest req;
 
-	public HotelRSParser(MMTHotelSearchResponse body) {
+	public HotelRSParser(MMTHotelSearchResponse body, IRequest req) {
 		super();
 		this.body = body;
+		this.req = req;
 	}
 
 	public HotelRS parse() {
@@ -43,6 +47,10 @@ public class HotelRSParser {
 			}
 		}
 		response.setHotels(respHotelList);
+		HotelRQ hotelRequest = (HotelRQ) req;
+		response.setCityName(hotelRequest.getCityCode());
+		response.setCheckInDate(hotelRequest.getCheckInDate());
+		response.setCheckOutDate(hotelRequest.getCheckOutDate());
 		return response;
 	}
 
