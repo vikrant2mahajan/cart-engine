@@ -1,11 +1,15 @@
 package com.mmt.services.utils;
 
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.mmt.services.http.HttplClient;
 
+@Component("geoFinder")
 public class GeoLocFinder {
 
+	@Autowired
 	private HttplClient client;
 
 	public HttplClient getClient() {
