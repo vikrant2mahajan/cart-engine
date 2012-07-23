@@ -186,7 +186,7 @@ public class AppController {
 	@RequestMapping("carReq.htm")
 	public ModelAndView getCarListing(CarRequestBean formDetails,HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null){
+		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
 			geoLoc= httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
@@ -223,7 +223,7 @@ public class AppController {
 	@RequestMapping("busReq.htm")
 	public ModelAndView getBusListing(BusRequestBean formDetails,HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null){
+		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
 			geoLoc= httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
@@ -261,7 +261,7 @@ public class AppController {
 	@RequestMapping("hotelReq.htm")
 	public ModelAndView getHotelListing(HotelRequestBean formDetails,HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null){
+		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
 			geoLoc= httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
@@ -351,5 +351,26 @@ public class AppController {
 	public void setUtil(ApplicationUtil util) {
 		this.util = util;
 	}
+	
+	@RequestMapping("selectBus.htm")
+	public ModelAndView selectBus(
+			@RequestParam(required = false, defaultValue = "", value = "data") String data) {
+		ObjectMapper mapper = new ObjectMapper();
+		ModelAndView modelAndView = new ModelAndView("review");
+		modelAndView.addObject("data", data);
+
+		try {
+			HashMap map = mapper.readValue(data, HashMap.class);
+			modelAndView.addObject("mapdata", map);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modelAndView;
+	}
+
 
 }
