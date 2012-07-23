@@ -38,6 +38,10 @@ public class CarService implements IProductService {
 		}else{
 			carResponse.setResponse(((GetOutstationCarListResponse)carWebServiceTemplate.marshalSendAndReceive(carRequest)).getResultsList().getResult());
 		}
+		if(carResponse!=null){
+			carResponse.setFromCity(request.getOrigin());
+			carResponse.setToCity(request.getDestination());
+		}
 		return carResponse;
 	}
 
