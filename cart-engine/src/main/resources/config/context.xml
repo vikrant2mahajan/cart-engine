@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task-3.1.xsd
+	">
+	<context:annotation-config />
+	<context:component-scan base-package="com.mmt" />
+
+
+
+
+	<!-- We give the name of the properties files which we want to load using 
+		spring context -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- <value>classpath:mailconfig.properties</value> -->
+				<!-- <value>classpath:application.properties</value> -->
+				<value>classpath:dbconfig.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+
+
+	<bean id="rmiService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean"
+		scope="singleton">
+		<property name="serviceUrl" value="rmi://10.86.12.10:1199/RMIService" />
+		<property name="serviceInterface"
+			value="com.mmt.engine.core.clients.RMIServiceLocator" />
+	</bean>
+
+
+
+	<!--This XML defines the Hibernate related configuration beans -->
+	<import resource="hibernate.xml" />
+	<import resource="ws-client.xml" />
+
+</beans>
