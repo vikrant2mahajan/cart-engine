@@ -9,7 +9,9 @@ public class CarRS implements IResponse {
 
 	private List<Result> response;
 	private String serviceType;
-
+	private String fromCity;
+	private String toCity;
+	
 	public List<Result> getResponse() {
 		return response;
 	}
@@ -25,5 +27,20 @@ public class CarRS implements IResponse {
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
 	}
-	
+
+	public String getFromCity() {
+		return fromCity;
+	}
+
+	public void setFromCity(String fromCity) {
+		this.fromCity = fromCity;
+	}
+
+	public String getToCity() {
+		return toCity;
+	}
+
+	public void setToCity(String toCity) {
+		this.toCity = toCity;
+	}
 }
