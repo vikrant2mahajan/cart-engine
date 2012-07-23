@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mmt.car.ws.Result;
+import com.mmt.data.models.SuggestionRequest;
 import com.mmt.engine.core.clients.RMIServiceLocator;
 import com.mmt.engine.core.utils.Flight;
 import com.mmt.search.RequestHolder;
@@ -50,9 +51,9 @@ public class SuggestionService implements ISuggestionService{
 	private RMIServiceLocator rmiService = null;
 
 	@Override
-	public List<Suggestion> getSuggestions(RequestHolder request) {
+	public List<Suggestion> getSuggestions(SuggestionRequest request) {
 		List<Suggestion> suggestionList = new ArrayList<Suggestion>();
-		switch (request.getType()) {
+		switch (Enum.valueOf(ProductType.class, request.getProductType())) {
 		case HOTEL:
 			populateHotelRule(request, suggestionList);
 			break;
@@ -72,23 +73,22 @@ public class SuggestionService implements ISuggestionService{
 	}
 
 	// Rule1 : Hotel Bases
-	private void populateHotelRule(RequestHolder request, List<Suggestion> suggestionList) {
-		HotelRQ req = (HotelRQ) request.getRequest();
-		String distance = findDistanceBetweenTwocities(request.getIp(),req.getCityCode());
-		if(request.getIp().equalsIgnoreCase(req.getCityCode())){
+	private void populateHotelRule(SuggestionRequest request, List<Suggestion> suggestionList) {
+		String distance = findDistanceBetweenTwocities(request.getGeoLoc(),request.getDestination());
+		if(request.getGeoLoc().equalsIgnoreCase(request.getDestination())){
 			//only car
-			populateCar(req.getCheckInDate(), request.getIp(), req.getCityCode(), suggestionList,"Car at door step");
+			populateCar(request.getCheckinDate(), request.getGeoLoc(), request.getDestination(), suggestionList,"Car at door step");
 		}else if(distance!=null){
 			if(Integer.parseInt(distance)>maxCarAfterHotel){
 				//Only flight suggestion
-				populateFlight(req.getCheckInDate(), "1", request.getIp(), req.getCityCode(), suggestionList,"Flight to Hotel Destination");
+				populateFlight(request.getCheckinDate(), "1", request.getGeoLoc(), request.getDestination(), suggestionList,"Flight to Hotel Destination");
 				//Airport drop car
-				populateCar(req.getCheckInDate(), request.getIp(), request.getIp(), suggestionList,"Airport Drop");
+				populateCar(request.getCheckinDate(), request.getGeoLoc(), request.getGeoLoc(), suggestionList,"Airport Drop");
 			}else{
 				//Outstation Car
-				populateCar(req.getCheckInDate(), request.getIp(),req.getCityCode(), suggestionList,"Car to Destination");
+				populateCar(request.getCheckinDate(), request.getGeoLoc(),request.getDestination(), suggestionList,"Car to Destination");
 				//Bus
-				populateBus(req.getCheckInDate(),request.getIp(),req.getCityCode(),"Bus to destination?",suggestionList);
+				populateBus(request.getCheckinDate(),request.getGeoLoc(),request.getDestination(),"Bus to destination?",suggestionList);
 			}
 		}
 	}
@@ -126,25 +126,24 @@ public class SuggestionService implements ISuggestionService{
 	}
 
 	// Rule2 : Flight Based
-	private void populateFlightRule(RequestHolder request, List<Suggestion> suggestionList) {
-		FlightRQ req = (FlightRQ) request.getRequest();
-		String distance = findDistanceBetweenTwocities(request.getIp(),req.getOrigin());
-		if(request.getIp().equalsIgnoreCase(req.getOrigin())){
+	private void populateFlightRule(SuggestionRequest req, List<Suggestion> suggestionList) {
+		String distance = findDistanceBetweenTwocities(req.getGeoLoc(),req.getOrigin());
+		if(req.getGeoLoc().equalsIgnoreCase(req.getOrigin())){
 			//Local usage car
-			populateCar(req.getDepartureDate().split("T")[0], request.getIp(),req.getOrigin(), suggestionList,"Airport Drop");
-			populateCar(req.getDepartureDate().split("T")[0], req.getDestination(),req.getDestination(), suggestionList,"Airport Pickup");
+			populateCar(req.getDepDate().split("T")[0], req.getGeoLoc(),req.getOrigin(), suggestionList,"Airport Drop");
+			populateCar(req.getDepDate().split("T")[0], req.getDestination(),req.getDestination(), suggestionList,"Airport Pickup");
 		}else if(distance!=null && Integer.parseInt(distance)<maxCarAfterHotel){
 			//Outstation usage car
-			populateCar(req.getDepartureDate().split("T")[0], request.getIp(),req.getOrigin(), suggestionList, "Airport Drop");
+			populateCar(req.getDepDate().split("T")[0], req.getGeoLoc(),req.getOrigin(), suggestionList, "Airport Drop");
 		}
 		String distance1 = findDistanceBetweenTwocities(req.getOrigin(),req.getDestination());
 		if(distance1!=null && Integer.parseInt(distance1)<maxCarAfterHotel){
-			populateCar(req.getDepartureDate().split("T")[0], req.getOrigin(),req.getDestination(), suggestionList, "Flexible for taking a car to destination?");
+			populateCar(req.getDepDate().split("T")[0], req.getOrigin(),req.getDestination(), suggestionList, "Flexible for taking a car to destination?");
 			
-			populateBus(req.getDepartureDate().split("T")[0],req.getOrigin(),req.getDestination(),"Flexible for taking a bus to destination?",suggestionList);
+			populateBus(req.getDepDate().split("T")[0],req.getOrigin(),req.getDestination(),"Flexible for taking a bus to destination?",suggestionList);
 		}
 		//Hotel on destination -- Done
-		populateHotelOnDestination(req.getDestination(),req.getDepartureDate().split("T")[0],req.getNoOfAdult(),suggestionList,"Cheapest hotel at destination");
+		populateHotelOnDestination(req.getDestination(),req.getDepDate().split("T")[0],"1",suggestionList,"Cheapest hotel at destination");
 	}
 	
 	private void populateBus(String deptDate, String origin, String destination, String desc, List<Suggestion> suggestionList) {
@@ -183,13 +182,12 @@ public class SuggestionService implements ISuggestionService{
 	}
 
 	// Rule3 : Bus Based
-	private void populateBusRule(RequestHolder request, List<Suggestion> suggestionList) {
-		BusRQ req = (BusRQ) request.getRequest();
+	private void populateBusRule(SuggestionRequest req, List<Suggestion> suggestionList) {
 		//Hotel on destination --Done
-		populateHotelOnDestination(util.getCityMapByBusCode().get(req.getDestination()).getCtyHtlcode(), changeDateFormat(req.getDepartureDate().split("T")[0]),req.getNoOfPax(),suggestionList,
+		populateHotelOnDestination(util.getCityMapByBusCode().get(req.getDestination()).getCtyHtlcode(), changeDateFormat(req.getDepDate().split("T")[0]),"1",suggestionList,
 				"Cheapest hotel at destination");
 		//Figure out car's fare and compare with bus
-		populateCar(changeDateFormat(req.getDepartureDate()), util.getCityMapByBusCode().get(req.getOrigin()).getCtyCarcode(), 
+		populateCar(changeDateFormat(req.getDepDate()), util.getCityMapByBusCode().get(req.getOrigin()).getCtyCarcode(), 
 				util.getCityMapByBusCode().get(req.getDestination()).getCtyCarcode(), suggestionList,"You can think about taking car");
 	}
 	
@@ -236,17 +234,16 @@ public class SuggestionService implements ISuggestionService{
 	}
 
 	// Rule4 : Car Based
-	private void populateCarRule(RequestHolder request, List<Suggestion> suggestionList) {
-		CarRQ req = (CarRQ) request.getRequest();
-		String distance = findDistanceBetweenTwocities(request.getIp(),req.getOrigin());
-		if(request.getIp().equalsIgnoreCase(req.getOrigin())){
+	private void populateCarRule(SuggestionRequest req, List<Suggestion> suggestionList) {
+		String distance = findDistanceBetweenTwocities(req.getGeoLoc(),req.getOrigin());
+		if(req.getGeoLoc().equalsIgnoreCase(req.getOrigin())){
 			//Do nothing
 		}else if(distance!=null && Integer.parseInt(distance)>maxCarAfterHotel){
 			//Flight
-			populateFlight(req.getYear()+"-"+req.getMonth()+"-"+req.getDate(),"1", request.getIp(), req.getOrigin(), suggestionList,"You might wanna fly to your car location");
+			populateFlight(req.getDepDate(),"1", req.getGeoLoc(), req.getOrigin(), suggestionList,"You might wanna fly to your car location");
 		}
 		//Hotel on destination -- Done
-		populateHotelOnDestination(req.getDestination(),populateCheckinDate(req.getDate(),req.getMonth(),req.getYear()),"1",suggestionList,"Cheapest hotel at destination");
+		populateHotelOnDestination(req.getDestination(),req.getDepDate(),"1",suggestionList,"Cheapest hotel at destination");
 	}
 	
 	private void populateHotelOnDestination(String destination,String populateCheckinDate,String noOfAdlt,List<Suggestion> suggestionList, String desc) {

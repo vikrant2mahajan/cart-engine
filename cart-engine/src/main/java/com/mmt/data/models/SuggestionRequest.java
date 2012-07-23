@@ -8,7 +8,7 @@ public class SuggestionRequest {
 	private String checkinDate;
 	private String checkoutDate;
 	private String depDate;
-
+	private String productType;
 	
 	
 	public String getOrigin() {
@@ -57,6 +57,14 @@ public class SuggestionRequest {
 
 	public void setDepDate(String depDate) {
 		this.depDate = depDate;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 
 }
