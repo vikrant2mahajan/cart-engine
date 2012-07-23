@@ -267,3 +267,104 @@
 	margin-top: 6px;
 	position: absolute;
 }
+.amenities{
+background: url("images/amenities.png") no-repeat scroll 0 0
+		transparent;	
+margin-top: 7px;
+}
+
+
+.am_active_1 {
+    height: 30px;
+    width: 30px;
+    background-position: 0px 0px;
+    float: left;
+}
+
+.am_active_2 {
+    height: 30px;
+    width: 30px;
+    background-position: -30px 0px;
+    float: left;
+}
+
+.am_active_3 {
+    height: 30px;
+    width: 30px;
+    background-position: -60px 0px;
+    float: left;
+}
+.am_active_4 {
+    height: 30px;
+    width: 30px;
+    background-position: -90px 0px;
+    float: left;
+}
+.am_active_5 {
+    height: 30px;
+    width: 30px;
+    background-position: -120px 0px;
+    float: left;
+}
+
+.am_inactive_1 {
+    height: 30px;
+    width: 30px;
+    background-position: 0px -30px;
+    float: left;
+}
+
+.am_inactive_2 {
+    height: 30px;
+    width: 30px;
+    background-position: 0px -30px;
+    float: left;
+}
+
+.am_inactive_3 {
+    height: 30px;
+    width: 30px;
+    background-position: -60px -30px;
+    float: left;
+}
+.am_inactive_4 {
+    height: 30px;
+    width: 30px;
+    background-position: -90px -30px;
+    float: left;
+}
+.am_inactive_5 {
+    height: 30px;
+    width: 30px;
+    background-position: -120px -30px;
+    float: left;
+}
+
+.nowrap_hotel{
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.aircon{
+	background: url("images/aircon.png") no-repeat scroll 0 0
+		transparent;
+	float: left;
+	height: 20px;
+    width: 20px;
+    margin-top: 7px;
+}
+.audio{
+	background: url("images/audio.png") no-repeat scroll 0 0
+		transparent;
+	float: left;
+	height: 20px;
+    width: 20px;
+    margin-top: 10px;
+}
+.car_logo{
+	 margin-top: 5px;
+}
+.listing-font {
+    font-size: 14px;
+    margin-top: 15px;
+}
