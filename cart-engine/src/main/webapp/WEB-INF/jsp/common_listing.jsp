@@ -14,6 +14,7 @@
 <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" />
 <link rel="stylesheet" href="css/jquery.mobile.structure-1.1.1.min.css" />
+<link rel="stylesheet" href="css/styles.css" />
 <!-- <link rel="stylesheet" href="css/jquery.mobile.theme-1.1.1.min.css" /> -->
 <link rel="stylesheet" href="css/jqm-docs.css" />
 <style type="text/css">
@@ -295,6 +296,114 @@
 							</a></li>
 						</c:forEach>
 
+					</c:if>
+					<c:if test="${result.type=='CAR'}">
+						<c:forEach var="car"
+							items="${result.response.response}"
+							varStatus="status">
+							<li><a href="index.html">
+							<div class="ui-grid-c">
+							<div class="ui-block-a">
+								<div>${car.carMake} ${car.carModel}</div>
+								<div  class="car_logo">
+									<img src="${car.carLogo}" >
+								</div>
+							</div>
+								<div class="ui-block-b">
+								<div title="${car.starRating} Star">
+									<c:forEach var="rating" begin="1" end="${car.starRating}" varStatus="status">
+										<div class="star-rating star-rating-on"></div>
+									</c:forEach>
+									<c:forEach var="rating" begin="1" end="${5-car.starRating}" varStatus="status">
+										<div class="star-rating star-rating"></div>
+									</c:forEach>
+								</div>
+								</br>
+								<div title="Air Condition" class="aircon"></div>
+								<div title="Stereo" class="audio"></div>
+								</div>
+								<div class="ui-block-c">
+								<c:if test="${result.response.serviceType == 'Local Usage'}">
+									<div>${car.usageType}</div>
+									<div>(4 Hr/${car.kmLimitToDisplay} Km)</div>
+								</c:if>
+								<c:if test="${result.response.serviceType == 'Outstation'}">
+									<div class="listing-font">Max. ${car.kmLimitToDisplay} Km/Day</div>
+								</c:if>
+								</div>
+								<div class="ui-block-d">
+									<h1 class="big">Rs <fmt:formatNumber type="number" value="${car.bookingPriceToDisplay}"/>
+									 </h1>
+								</div>
+							</div>
+					</a> 
+					</li>
+					</c:forEach>
+					</c:if>
+					
+					<c:if test="${result.type=='HOTEL'}">
+						<c:forEach var="hotel"
+							items="${result.response.hotels}"
+							varStatus="status">
+							<li><a href="index.html">
+							<div class="ui-grid-c">
+								<div class="ui-block-a">
+									<img width="45%" height="45%"
+										src="${hotel.urlPic}" class="thumbnail">
+								</div>
+								<div class="ui-block-b">
+									<h3 class="nowrap_hotel">${hotel.hotelName}</h3>
+<!-- 									<p class="wrap">Paharganj , New Delhi Railway Station</p> -->
+									<div title="${hotel.starRating} Star">
+										<c:forEach var="rating" begin="1" end="${hotel.starRating}" varStatus="status">
+											<div class="star-rating star-rating-on"></div>
+										</c:forEach>
+										<c:forEach var="rating" begin="1" end="${5-hotel.starRating}" varStatus="status">
+											<div class="star-rating star-rating"></div>
+										</c:forEach>
+									</div>
+									<br />
+									<c:if test="${hotel.restaurantOrBar}">
+										<div title="Restaurant/Bar" class="amenities am_active_1"></div>
+									</c:if>
+									<c:if test="${not hotel.restaurantOrBar}">
+										<div title="No Restaurant/Bar" class="amenities am_inactive_1"></div>
+									</c:if>
+									<c:if test="${hotel.internet}">
+										<div title="Internet/Wi-Fi" class="amenities am_active_2"></div>
+									</c:if>
+									<c:if test="${not hotel.internet}">
+										<div title="No Internet/Wi-Fi" class="amenities am_inactive_2"></div>
+									</c:if>
+									<c:if test="${hotel.recreationAvail}">
+										<div title="Recreation" class="amenities am_active_3"></div>
+									</c:if>
+									<c:if test="${not hotel.recreationAvail}">
+										<div title="No Recreation" class="amenities am_inactive_3"></div>
+									</c:if>
+									<c:if test="${hotel.swimmingPoolAvail}">
+										<div title="Swimming Pool" class="amenities am_active_4"></div>
+									</c:if>
+									<c:if test="${not hotel.swimmingPoolAvail}">
+										<div title="No Swimming Pool" class="amenities am_inactive_4"></div>
+									</c:if>
+									<c:if test="${hotel.parkingAvail}">
+										<div title="Parking Facility" class="amenities am_active_5"></div>
+									</c:if>
+									<c:if test="${not hotel.parkingAvail}">
+										<div title="No Parking Facility" class="amenities am_inactive_5"></div>
+									</c:if>																																			
+								</div>
+								<div class="ui-block-c"></div>
+								<div class="ui-block-d">
+									</br>
+									<h1 class="big">Rs <fmt:formatNumber type="number" value="${hotel.lowestRate}"/>
+									 </h1>
+								</div>
+							</div>
+					</a> 
+					</li>
+					</c:forEach>
 					</c:if>
 
 
