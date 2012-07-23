@@ -23,6 +23,21 @@ var cart = {};
 
 				});
 
+		
+		$("body").on(
+				"click",
+				"li[data-type='HOTEL'] a",
+				function() {
+					$("#requestData").val(
+							JSON.stringify(results['HOTEL'][$(this).parents(
+									"li").attr("id")]));
+					$("#listingForm").submit();
+
+				});
+
+		
+		
+		
 		    $("body").on(
 				"click",
 				"li[data-type='CAR'] a",
@@ -45,6 +60,9 @@ var cart = {};
 				addBusToCart(true);
 			if (currentProduct.type == 'FLIGHT')
 				addFlightToCart(true);
+			if(currentProduct.type=='HOTEL')
+				addHotelToCart(true);
+			
 			if (currentProduct.type == 'CAR')
 				addCarToCart(true);
 		});
@@ -52,6 +70,22 @@ var cart = {};
 			var item = $(this).parents(".cart_item");
 			$(item).hide("scale", 1000, function() {
 				$(item).remove();
+				var prodType=$(item).data("type");
+				$.ajax({
+					url : 'removeProduct.htm',
+					type : "POST",
+					data : {
+						type : prodType
+					},
+					success : function(data) {
+						cart['FARE']-=cart[prodType].fare;
+						cart[prodType]=undefined;
+
+						$(".fare .big span:last").text(cart['FARE']);
+						console.log("removed from session");
+					}
+				});
+				
 			});
 		});
 
@@ -83,7 +117,7 @@ var addBusToCart = function(animate) {
 				to : $(".cart")
 			}, 1000);
 
-		var content = '<div	class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item " style="display:none">	<span class="cart_delete" title="Remove"></span>	<div align="center"><img alt="BUS" src="css/images/bus(2).png" width="30px" height="30px;"></div><p class="heavy">'
+		var content = '<div data-type="BUS"	class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item " style="display:none">	<span class="cart_delete" title="Remove"></span>	<div align="center"><img alt="BUS" src="css/images/bus(2).png" width="30px" height="30px;"></div><p class="heavy">'
 				+ currentProduct.groupName
 				+ '</p>	<p>'
 				+ currentProduct.fromCity
@@ -117,6 +151,12 @@ var addBusToCart = function(animate) {
 	}
 };
 
+
+
+
+
+
+
 var addFlightToCart = function(animate) {
 
 	if (cart['FLIGHT'] == undefined) {
@@ -136,7 +176,7 @@ var addFlightToCart = function(animate) {
 				to : $(".cart")
 			}, 1000);
 
-		var content = '<div	class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item " style="display:none">	<span class="cart_delete" title="Remove"></span>	<div align="center"><img alt="BUS" src="css/images/'
+		var content = '<div data-type="FLIGHT"	class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item " style="display:none">	<span class="cart_delete" title="Remove"></span>	<div align="center"><img alt="BUS" src="css/images/'
 				+ currentProduct.carrierCode
 				+ '.png" width="50%" height="30px;"></div><p class="heavy">'
 				+ currentProduct.airlineName
@@ -171,6 +211,59 @@ var addFlightToCart = function(animate) {
 	} else {
 		$(".cart_panel[data-position='fixed']").fixedtoolbar('show');
 		alert("You already have a flight in your cart !");
+
+	}
+};
+
+
+
+
+var addHotelToCart = function(animate) {
+
+	if (cart['HOTEL'] == undefined) {
+		cart['HOTEL'] = currentProduct;
+		if (cart['FARE'] == undefined) {
+			cart['FARE'] = currentProduct.fare;
+
+		} else {
+			var fare = 0;
+			fare = currentProduct.fare;
+			cart['FARE'] += fare;
+		}
+		$(".cart_panel[data-position='fixed']").fixedtoolbar('show');
+
+		if (animate)
+			$("#planTravel").effect("transfer", {
+				to : $(".cart")
+			}, 1000);
+
+		var content = '<div data-type="HOTEL"	class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item " style="display:none">	<span class="cart_delete" title="Remove"></span>	<div align="center"><img alt="BUS" src="'
+				+ currentProduct.imageUrl
+				+ '" width="50%" height="50px;"></div><p class="heavy">'
+				+ currentProduct.name+' ('+currentProduct.rating	+ '&#9733; '+ ')</p></div>';
+		$(".cart_panel[data-position='fixed'] .ui-grid-e").first().after(
+				content);
+
+		if (animate)
+			$(".cart_item:not(:visible)").show("drop", 1000);
+
+		var params = JSON.stringify(currentProduct);
+		$.ajax({
+			url : 'addItemToCart.htm',
+			type : "POST",
+			data : {
+				item : params,
+				type : currentProduct.type,
+				fare : cart['FARE']
+
+			},
+			success : function(data) {
+				$(".fare .big span:last").text(cart['FARE']);
+			}
+		});
+	} else {
+		$(".cart_panel[data-position='fixed']").fixedtoolbar('show');
+		alert("You already have a Hotel in your cart !");
 
 	}
 };
@@ -234,5 +327,4 @@ var addCarToCart = function(animate) {
 
 	}
 };
-
 

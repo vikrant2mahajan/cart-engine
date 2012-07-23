@@ -1,7 +1,5 @@
 package com.mmt.services.product.hotels;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.mmt.hotel.entity.MMTHotelSearchRequest;
-import com.mmt.hotel.entity.MMTHotelSearchResponse;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria;
+import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.Area;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.RoomStayCandidates;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.RoomStayCandidates.RoomStayCandidate;
@@ -18,39 +16,45 @@ import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.RoomS
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.RoomStayCandidates.RoomStayCandidate.GuestCounts.GuestCount;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.StayDateRanges;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.StayDateRanges.StayDateRange;
+import com.mmt.hotel.entity.MMTHotelSearchResponse;
 import com.mmt.services.product.IProductService;
 import com.mmt.services.product.IRequest;
 import com.mmt.services.product.IResponse;
-import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion;
-import com.mmt.hotel.entity.MMTHotelSearchResponse.HotelSearchResults;
 
 @Component("hotelService")
-public class HotelService implements IProductService{
+public class HotelService implements IProductService {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	@Value("${app.hotel.url}")
-	private String htlUrl; 
-	
+	private String htlUrl;
+
 	public IResponse search(IRequest req) {
 		MMTHotelSearchRequest hotelRequest = createHotelSearchRequest(req);
-		ResponseEntity<MMTHotelSearchResponse> response = restTemplate.postForEntity(htlUrl, hotelRequest, MMTHotelSearchResponse.class);
+		ResponseEntity<MMTHotelSearchResponse> response = restTemplate
+				.postForEntity(htlUrl, hotelRequest,
+						MMTHotelSearchResponse.class);
 		return populateHotelResponse(response.getBody(), req);
 	}
 
-	private IResponse populateHotelResponse(MMTHotelSearchResponse response, IRequest req) {
-		HotelRSParser parser = new HotelRSParser(response, req); 
+	private IResponse populateHotelResponse(MMTHotelSearchResponse response,
+			IRequest req) {
+		HotelRSParser parser = new HotelRSParser(response, req);
 		return parser.parse();
 	}
 
 	private MMTHotelSearchRequest createHotelSearchRequest(IRequest req) {
-		HotelRQ hotelReq = (HotelRQ)req;
+		HotelRQ hotelReq = (HotelRQ) req;
 		MMTHotelSearchRequest request = new MMTHotelSearchRequest();
-		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(HotelUtil.getPromotionReferenceCodes());
-		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(HotelUtil.getPos());
-		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(createCriteria(hotelReq));
-		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(HotelUtil.getResultTransformer());
+		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(
+				HotelUtil.getPromotionReferenceCodes());
+		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(
+				HotelUtil.getPos());
+		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(
+				createCriteria(hotelReq));
+		request.getPOSOrPromotionReferenceCodesOrResultTransformer().add(
+				HotelUtil.getResultTransformer());
 		return request;
 	}
 
@@ -79,8 +83,8 @@ public class HotelService implements IProductService{
 
 	private RoomStayCandidates createRoomStayCandidates(HotelRQ req) {
 		RoomStayCandidates rsc = new RoomStayCandidates();
-		if(req.getNoOfRooms()!=null && req.getNoOfRooms().size()>0){
-			for(RoomRQ roomRq:req.getNoOfRooms()){
+		if (req.getNoOfRooms() != null && req.getNoOfRooms().size() > 0) {
+			for (RoomRQ roomRq : req.getNoOfRooms()) {
 				RoomStayCandidate rs = new RoomStayCandidate();
 				rs.getGuestCounts().add(createGuestCounts(roomRq));
 				rsc.getRoomStayCandidate().add(rs);
@@ -104,7 +108,7 @@ public class HotelService implements IProductService{
 		area.setCountryCode("IN");
 		return area;
 	}
-	
+
 	public RestTemplate getRestTemplate() {
 		return restTemplate;
 	}

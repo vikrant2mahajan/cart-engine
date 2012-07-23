@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="css/styles.css" />
 <!-- <link rel="stylesheet" href="css/jquery.mobile.theme-1.1.1.min.css" /> -->
 <link rel="stylesheet" href="css/jqm-docs.css" />
-<link rel="stylesheet" href="css/styles.css" />
 
 <style type="text/css">
 .ui-effects-transfer {
@@ -71,6 +70,11 @@
 										pattern="EEEEE, MMMM d, yyyy" value="${depDate}" /><span
 									class="ui-li-count">${fn:length(result.response.response.searchResult.results)}
 										Flights</span>
+
+
+																					
+
+
 								</li>
 							</c:if>
 
@@ -136,7 +140,6 @@
 											flight['departure']='<fmt:formatDate pattern="H:mm a" value="${dep}" />';
 												flight['arrival']='<fmt:formatDate pattern="H:mm a" value="${arv}" />'
 												results.Flight['${leg.flightNumber}']=flight;
-											
 											</script>
 											 </c:if>
 											<div class="ui-block-c">
@@ -471,17 +474,39 @@
 					</c:if>
 					
 					<c:if test="${result.type=='HOTEL'}">
+						<script>
+							results["HOTEL"] = {};
+						</script>
+							<form action="selectBus.htm" method="get" id="listingForm">
+							<input type="hidden" id="requestData" name="data" /> <input
+								type="hidden" name="type" value="${result.type}" />
+						</form>
+						
+						
 						<c:forEach var="hotel"
 							items="${result.response.hotels}"
 							varStatus="status">
-									<c:if test="${status.index==0 }">
+							
+							
+							<c:if test="${status.index==0 }">
 							   <li data-role="list-divider" >
 								  Hotels in ${cityMapByCode[result.response.cityName].ctyName}
 								   <span class="ui-li-count">${fn:length(result.response.hotels)}
 									Hotels </span>
 							   </li>
 						    </c:if>
-							<li><a href="index.html">
+						    <script>
+						    	var hotel={};
+						    	hotel['type']='HOTEL';
+						    	hotel['id']='${status.index}';
+						    	hotel['name']="${hotel.hotelName}";
+						    	hotel['imageUrl']="${hotel.urlPic}";
+						    	hotel['rating']=${hotel.starRating};
+						    	hotel['fare']=${hotel.lowestRate};
+						    	hotel['fromCity']='${cityMapByCode[result.response.cityName].ctyName}';
+						    	hotel['checkinDate']='${result.response.checkInDate}';
+						    </script>
+							<li data-type="HOTEL" id="${status.index}"><a href="#hotel">
 							<div class="ui-grid-c">
 								<div class="ui-block-a">
 									<img width="45%" height="45%"
@@ -500,30 +525,50 @@
 									</div>
 									<br />
 									<c:if test="${hotel.restaurantOrBar}">
+									<script>
+								    	hotel['restaurantOrBar']=true;
+									</script>
 										<div title="Restaurant/Bar" class="amenities am_active_1"></div>
 									</c:if>
 									<c:if test="${not hotel.restaurantOrBar}">
+									<script>
+								    	hotel['restaurantOrBar']=false;
+									</script>
 										<div title="No Restaurant/Bar" class="amenities am_inactive_1"></div>
 									</c:if>
 									<c:if test="${hotel.internet}">
+									<script>
+								    	hotel['internet']=true;
+									</script>
 										<div title="Internet/Wi-Fi" class="amenities am_active_2"></div>
 									</c:if>
 									<c:if test="${not hotel.internet}">
 										<div title="No Internet/Wi-Fi" class="amenities am_inactive_2"></div>
 									</c:if>
 									<c:if test="${hotel.recreationAvail}">
+									<script>
+								    	hotel['recreationAvail']=true;
+									</script>
 										<div title="Recreation" class="amenities am_active_3"></div>
 									</c:if>
 									<c:if test="${not hotel.recreationAvail}">
 										<div title="No Recreation" class="amenities am_inactive_3"></div>
 									</c:if>
 									<c:if test="${hotel.swimmingPoolAvail}">
+									<script>
+								    	hotel['swimmingPoolAvail']=true;
+									</script>
 										<div title="Swimming Pool" class="amenities am_active_4"></div>
 									</c:if>
 									<c:if test="${not hotel.swimmingPoolAvail}">
 										<div title="No Swimming Pool" class="amenities am_inactive_4"></div>
 									</c:if>
 									<c:if test="${hotel.parkingAvail}">
+									<script>
+								    	hotel['parkingAvail']=true;
+								    	
+								    	results.HOTEL[hotel.id]=hotel;
+									</script>
 										<div title="Parking Facility" class="amenities am_active_5"></div>
 									</c:if>
 									<c:if test="${not hotel.parkingAvail}">
@@ -542,11 +587,15 @@
 					</c:forEach>
 					</c:if>
 
+
+
+
 				</ul>
 			</div>
 			<!-- Content -->
 		<div data-role="footer" data-position="fixed">
 			     <h1><c:if test="${result.type=='FLIGHT'}">Flight</c:if><c:if test="${result.type=='BUS'}">Bus</c:if><c:if test="${result.type=='CAR'}">Car</c:if><c:if test="${result.type=='HOTEL'}">Hotels</c:if></h1>
+		
 		 </div>
 
 

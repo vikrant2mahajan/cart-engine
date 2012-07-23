@@ -83,6 +83,7 @@
 	margin: 4px !important;
 	padding: 5px;
 	width: 150px;
+	height: 100px;
 }
 
 .cart_item p {
@@ -367,9 +368,58 @@
 }
 
 }
+
+.audio {
+	background: url("images/audio.png") no-repeat scroll 0 0 transparent;
+	float: left;
+	height: 20px;
+	width: 20px;
+	margin-top: 10px;
+}
+
+.car_logo {
+	margin-top: 5px;
+}
+
+.listing-font {
+	font-size: 14px;
+	margin-top: 15px;
+}
+
+.airplane {
+	background: url("images/air_plane.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+}
+
+.hotels {
+	background: url("images/hotels.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+}
+
+.bus_logo {
+	background: url("images/bus-logo.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+}
+
+.car_logo1 {
+	background: url("images/car-logo.png") no-repeat scroll 0 0 transparent;
+	height: 128px;
+	width: 128px;
+}
+
+.fare {
+	float: right;
+	margin-right: 25px;
+	padding: 10px;
+	width: 400px;
+}
+
 .amenities {
 	background: url("images/amenities.png") no-repeat scroll 0 0 transparent;
-	margin-top: 7px;
+	margin-top: 7px; 
 }
 
 .am_active_1 {
@@ -401,7 +451,7 @@
 }
 
 .am_active_5 {
-	height: 30px;
+	height: 30px; 
 	width: 30px;
 	background-position: -120px 0px;
 	float: left;
@@ -453,52 +503,4 @@
 	height: 20px;
 	width: 20px;
 	margin-top: 7px;
-}
-
-.audio {
-	background: url("images/audio.png") no-repeat scroll 0 0 transparent;
-	float: left;
-	height: 20px;
-	width: 20px;
-	margin-top: 10px;
-}
-
-.car_logo {
-	margin-top: 5px;
-}
-
-.listing-font {
-	font-size: 14px;
-	margin-top: 15px;
-}
-
-.airplane {
-	background: url("images/air_plane.png") no-repeat scroll 0 0 transparent;
-	height: 128px;
-	width: 128px;
-}
-
-.hotels {
-	background: url("images/hotels.png") no-repeat scroll 0 0 transparent;
-	height: 128px;
-	width: 128px;
-}
-
-.bus_logo {
-	background: url("images/bus-logo.png") no-repeat scroll 0 0 transparent;
-	height: 128px;
-	width: 128px;
-}
-
-.car_logo1 {
-	background: url("images/car-logo.png") no-repeat scroll 0 0 transparent;
-	height: 128px;
-	width: 128px;
-}
-
-.fare {
-	float: right;
-	margin-right: 25px;
-	padding: 10px;
-	width: 400px;
 }

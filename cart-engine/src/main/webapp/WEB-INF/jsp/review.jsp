@@ -33,12 +33,15 @@
 			<div class="ui-grid-e ">
 
 				<div class="ui-block-a cart"></div>
+				
+				
+				
 				<c:if test="${not empty cart and not empty cart.products['BUS']}">
 				<script>
 				cart['BUS']=${cart.products['BUS']};
 				cart['FARE']=${cart.fare};
 				</script>
-					<div style=""
+					<div style="" data-type="BUS"
 						class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">
 						<span title="Remove" class="cart_delete"></span>
 						<div align="center">
@@ -58,25 +61,39 @@
 				cart['FLIGHT']=${cart.products['FLIGHT']};				
 				</script>
 					
-					<div style="" class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">
+					<div data-type="FLIGHT" style="" class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">
 						<span title="Remove" class="cart_delete"></span>	
 						<div align="center"><img width="50%" height="30px;" src="css/images/${cart.products['FLIGHTM'].carrierCode}.png" alt="FLIGHT">
 						</div><p class="heavy">${cart.products['FLIGHTM'].airlineName}</p>	<p>${cart.products['FLIGHTM'].fromCity} to ${cart.products['FLIGHTM'].toCity}</p>	<p>${cart.products['FLIGHTM'].departure} - ${cart.products['FLIGHTM'].arrival}</p></div>
-					
-					
 				</c:if>
 
 
+				<c:if test="${not empty cart and not empty cart.products['HOTEL']}">
+				<script>
+				cart['HOTEL']=${cart.products['HOTEL']};				
+				</script>
+			
+			<div style="" data-type="HOTEL" class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">	
+			<span title="Remove" class="cart_delete"></span>	
+			<div align="center"><img width="50%" height="50px;" src=" ${cart.products['HOTELM'].imageUrl}" alt="BUS">
+			</div><p class="heavy">${cart.products['HOTELM'].name} ( ${cart.products['HOTELM'].rating} &#9733; )</p></div>
 
+
+				</c:if>
+	
+	
 				<c:if test="${not empty cart and not empty cart.products['CAR']}">
 				<script>
 				cart['CAR']=${cart.products['CAR']};				
 				</script>
-					<div style="" class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">
+					<div data-type="CAR" style="" class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">
 						<span title="Remove" class="cart_delete"></span>	
 						<div align="center"><img width="50%" height="30px;" src=${cart.products['CARM'].logo} alt="FLIGHT">
 						</div><p class="heavy">${cart.products['CARM'].name}</p>	<p>${cart.products['CARM'].fromCity} to ${cart.products['CARM'].toCity}</p></div>
 				</c:if>
+
+
+
 				<div class="ui-block-a fare"
 					<c:if test="${empty cart}">style="display: none;"</c:if>>
 					<div class="ui-grid-a ">
@@ -94,7 +111,7 @@
 				</div>
 			</div>
 		</div>
-		
+		<!-- /footer -->
 
 
 
@@ -104,7 +121,12 @@
 			<div class="ui-grid-d heading" data-role="header" data-theme="b">
 				<div class="ui-block-a ">Product</div>
 				<div class="ui-block-b">City</div>
-				<div class="ui-block-c">Time</div>
+				<c:if test="${mapdata.type=='HOTEL'}">
+					<div class="ui-block-c">Facilites</div>
+				</c:if>
+				<c:if test="${not mapdata.type=='HOTEL'}">
+					<div class="ui-block-c">Time</div>
+				</c:if>
 				<div class="ui-block-d">Fare</div>
 			</div>
 			</br>
@@ -156,8 +178,8 @@
 
 			</c:if>
 
-	
-			<c:if test="${mapdata.type=='CAR'}">
+
+				<c:if test="${mapdata.type=='CAR'}">
 				<div class="ui-grid-d ${mapdata.type }_product">
 					<c:if test="${mapdata.type=='CAR'}">
 						<div align="center" class="ui-block-a">
@@ -182,7 +204,89 @@
 				</div>
 
 			</c:if>
-			
+
+
+
+
+			<c:if test="${mapdata.type=='HOTEL'}">
+				<div class="ui-grid-d ${mapdata.type }_product">
+					<c:if test="${mapdata.type=='HOTEL'}">
+						<div align="center" class="ui-block-a">
+							<img width="30%" height="30%" alt="BUS"
+								src="${mapdata.imageUrl }"><br /> <strong>${mapdata.name}</strong><br />
+								<div style="width: 90px;">
+								<c:forEach var="rating" begin="1" end="${mapdata.rating}" varStatus="status">
+											<div class="star-rating star-rating-on"></div>
+										</c:forEach>
+										<c:forEach var="rating" begin="1" end="${5-mapdata.rating}" varStatus="status">
+											<div class="star-rating star-rating"></div>
+								</c:forEach>
+								</div>
+								
+								 
+						</div>
+					</c:if>
+					<div class="ui-block-b">
+						<br /> <br /> ${mapdata.fromCity}<br/>
+						<fmt:parseDate value="${mapdata.checkinDate }"	var="depDate" pattern="yyyy-MM-dd" />
+						<fmt:formatDate pattern="EEEE ,MMMM dd yyyy" value="${depDate}" />
+						
+						
+					</div>
+					<div class="ui-block-c" align="center">
+						<br /> <br />
+						
+						<div style="width:150px;">
+									<c:if test="${mapdata.restaurantOrBar}">
+										<div title="Restaurant/Bar" class="amenities am_active_1"></div>
+									</c:if>
+									<c:if test="${empty mapdata.restaurantOrBar}">
+										<div title="No Restaurant/Bar" class="amenities am_inactive_1"></div>
+									</c:if>
+									<c:if test="${mapdata.internet}">
+										<div title="Internet/Wi-Fi" class="amenities am_active_2"></div>
+									</c:if>
+									<c:if test="${empty mapdata.internet}">
+										<div title="No Internet/Wi-Fi" class="amenities am_inactive_2"></div>
+									</c:if>
+									<c:if test="${mapdata.recreationAvail}">
+										<div title="Recreation" class="amenities am_active_3"></div>
+									</c:if>
+									<c:if test="${empty mapdata.recreationAvail}">
+										<div title="No Recreation" class="amenities am_inactive_3"></div>
+									</c:if>
+									<c:if test="${mapdata.swimmingPoolAvail}">
+										<div title="Swimming Pool" class="amenities am_active_4"></div>
+									</c:if>
+									<c:if test="${empty mapdata.swimmingPoolAvail}">
+										<div title="No Swimming Pool" class="amenities am_inactive_4"></div>
+									</c:if>
+									<c:if test="${mapdata.parkingAvail}">
+										<div title="Parking Facility" class="amenities am_active_5"></div>
+									</c:if>
+									<c:if test="${empty mapdata.parkingAvail}">
+										<div title="No Parking Facility" class="amenities am_inactive_5"></div>
+									</c:if>								
+						</div>
+						
+					</div>
+					<div class="ui-block-d">
+						<br /> <br /> <strong class="big"><span class="WebRupee">Rs</span> <fmt:formatNumber
+								type="number" value="${mapdata.fare}" /></strong>
+					</div>
+				</div>
+
+			</c:if>
+
+
+
+
+
+
+
+
+
+
 
 			<div class="ui-grid-a panel">
 				<div class="ui-block-a" align="left">

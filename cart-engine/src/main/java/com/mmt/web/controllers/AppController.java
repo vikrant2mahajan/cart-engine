@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import com.mmt.services.product.cars.CarRQ;
 import com.mmt.services.product.cars.ServiceType;
 import com.mmt.services.product.flights.FlightRQ;
 import com.mmt.services.product.flights.FlightRS;
+import com.mmt.services.product.hotels.Hotel;
 import com.mmt.services.product.hotels.HotelRQ;
 import com.mmt.services.product.hotels.HotelRS;
 import com.mmt.services.product.hotels.RoomRQ;
@@ -52,10 +54,10 @@ public class AppController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Autowired
 	private ApplicationUtil util;
-	
+
 	@Autowired
 	private ISuggestionService suggestionService;
 
@@ -149,17 +151,19 @@ public class AppController {
 	@RequestMapping("home.htm")
 	public ModelAndView getHomeUI() {
 		ModelAndView modelAndView = new ModelAndView("home");
-//		List cities = cityMapperData.getAllCities();
+		// List cities = cityMapperData.getAllCities();
 		List cities = util.getCityList();
 		modelAndView.addObject("cities", cities);
 		return modelAndView;
 	}
 
 	@RequestMapping("flightsReq.htm")
-	public ModelAndView getFlightsListing(FlightRequestBean formDetails,HttpServletRequest httpRequest) {
+	public ModelAndView getFlightsListing(FlightRequestBean formDetails,
+			HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
-			geoLoc= httpRequest.getParameter("geoLoc");
+		if (httpRequest.getParameter("geoLoc") != null
+				&& !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))) {
+			geoLoc = httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
 		RequestHolder holder = new RequestHolder();
@@ -176,21 +180,24 @@ public class AppController {
 		holder.setRequest(request);
 		holder.setType(ProductType.FLIGHT);
 		holder.setIp(geoLoc);
-		suggestionService.getSuggestions(holder);
+		//suggestionService.getSuggestions(holder);
 		ResponseHolder holder2 = searchService.search(holder);
-		Collections.sort(((FlightRS)(holder2.getResponse())).getResponse().getResults(), new FlightPriceComparator());
+		Collections.sort(((FlightRS) (holder2.getResponse())).getResponse()
+				.getResults(), new FlightPriceComparator());
 		modelAndView.addObject("result", holder2);
 		return modelAndView;
 	}
 
 	@RequestMapping("carReq.htm")
-	public ModelAndView getCarListing(CarRequestBean formDetails,HttpServletRequest httpRequest) {
+	public ModelAndView getCarListing(CarRequestBean formDetails,
+			HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
-			geoLoc= httpRequest.getParameter("geoLoc");
+		if (httpRequest.getParameter("geoLoc") != null
+				&& !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))) {
+			geoLoc = httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
-		try{
+		try {
 			RequestHolder holder = new RequestHolder();
 			CarRQ request = new CarRQ();
 			String depDate = formDetails.getcDepDate();
@@ -203,28 +210,32 @@ public class AppController {
 			request.setOrigin(formDetails.getcDepCity());
 			request.setCapacity("4");
 			request.setServiceType(ServiceType.OUTSTATION_USAGE);
-			if(formDetails.getcDepCity().equalsIgnoreCase(formDetails.getcRetCity())){
+			if (formDetails.getcDepCity().equalsIgnoreCase(
+					formDetails.getcRetCity())) {
 				request.setServiceType(ServiceType.LOCAL_USAGE);
 				request.setDestination(null);
 			}
 			holder.setRequest(request);
 			holder.setType(ProductType.CAR);
 			holder.setIp(geoLoc);
-			suggestionService.getSuggestions(holder);
+//			suggestionService.getSuggestions(holder);
 			ResponseHolder holder2 = searchService.search(holder);
-//			Collections.sort(((CarRS)(holder2.getResponse())).getResponse(),new CarPriceComparator());
+			// Collections.sort(((CarRS)(holder2.getResponse())).getResponse(),new
+			// CarPriceComparator());
 			modelAndView.addObject("result", holder2);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return modelAndView;
 	}
 
 	@RequestMapping("busReq.htm")
-	public ModelAndView getBusListing(BusRequestBean formDetails,HttpServletRequest httpRequest) {
+	public ModelAndView getBusListing(BusRequestBean formDetails,
+			HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
-			geoLoc= httpRequest.getParameter("geoLoc");
+		if (httpRequest.getParameter("geoLoc") != null
+				&& !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))) {
+			geoLoc = httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
 
@@ -245,10 +256,11 @@ public class AppController {
 			holder.setType(ProductType.BUS);
 			holder.setIp(geoLoc);
 			ResponseHolder holder2 = searchService.search(holder);
-//			suggestionService.getSuggestions(holder);
-			WsCheckAvailability1XResponse response = (WsCheckAvailability1XResponse) holder2.getResponse();
+			// suggestionService.getSuggestions(holder);
+			WsCheckAvailability1XResponse response = (WsCheckAvailability1XResponse) holder2
+					.getResponse();
 			List<Trip> busList = response.getWsCheckAvailabilityRS().getTrip();
-			Collections.sort(busList,new BusPriceComparator());
+			Collections.sort(busList, new BusPriceComparator());
 			modelAndView.addObject("result", holder2);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -258,14 +270,36 @@ public class AppController {
 		return modelAndView;
 	}
 
+	@RequestMapping("selectBus.htm")
+	public ModelAndView selectBus(
+			@RequestParam(required = false, defaultValue = "", value = "data") String data) {
+		ObjectMapper mapper = new ObjectMapper();
+		ModelAndView modelAndView = new ModelAndView("review");
+		modelAndView.addObject("data", data);
+
+		try {
+			HashMap map = mapper.readValue(data, HashMap.class);
+			modelAndView.addObject("mapdata", map);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modelAndView;
+	}
+
 	@RequestMapping("hotelReq.htm")
-	public ModelAndView getHotelListing(HotelRequestBean formDetails,HttpServletRequest httpRequest) {
+	public ModelAndView getHotelListing(HotelRequestBean formDetails,
+			HttpServletRequest httpRequest) {
 		String geoLoc = "DEL";
-		if(httpRequest.getParameter("geoLoc")!=null && !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))){
-			geoLoc= httpRequest.getParameter("geoLoc");
+		if (httpRequest.getParameter("geoLoc") != null
+				&& !"".equalsIgnoreCase(httpRequest.getParameter("geoLoc"))) {
+			geoLoc = httpRequest.getParameter("geoLoc");
 		}
 		ModelAndView modelAndView = new ModelAndView("common_listing");
-		try{
+		try {
 			RequestHolder holder = new RequestHolder();
 			HotelRQ request = new HotelRQ();
 			request.setCheckInDate(formDetails.gethCheckInDate());
@@ -278,15 +312,35 @@ public class AppController {
 			holder.setType(ProductType.HOTEL);
 			holder.setRequest(request);
 			holder.setIp(geoLoc);
-//			suggestionService.getSuggestions(holder);
+			// suggestionService.getSuggestions(holder);
 			ResponseHolder holder2 = searchService.search(holder);
-			Collections.sort(((HotelRS)(holder2.getResponse())).getHotels(), new HotelPriceComparator());
+			prune(holder2);
+			Collections.sort(((HotelRS) (holder2.getResponse())).getHotels(),
+					new HotelPriceComparator());
 			modelAndView.addObject("result", holder2);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return modelAndView;
+	}
+
+	private void prune(ResponseHolder holder) {
+		HotelRS hotelRS = (HotelRS) holder.getResponse();
+		if (hotelRS != null && hotelRS.getHotels().size() > 0) {
+
+			Iterator<Hotel> iterator = hotelRS.getHotels().iterator();
+
+			while (iterator.hasNext()) {
+				Hotel hotel = iterator.next();
+				if (hotel.getStarRating().equals("1")
+						|| hotel.getStarRating().equals("2")) {
+					iterator.remove();
+				}
+
+			}
+
+		}
 	}
 
 	@RequestMapping("addItemToCart.htm")
@@ -344,6 +398,15 @@ public class AppController {
 		return (ProductCart) session.getAttribute("cart");
 	}
 
+	@RequestMapping("removeProduct.htm")
+	public @ResponseBody
+	ProductCart removeProduct(HttpSession session,
+			@RequestParam(value = "type", required = true) String type) {
+		((ProductCart) session.getAttribute("cart")).getProducts().remove(type);
+		return ((ProductCart) session.getAttribute("cart"));
+
+	}
+
 	public ApplicationUtil getUtil() {
 		return util;
 	}
@@ -351,26 +414,5 @@ public class AppController {
 	public void setUtil(ApplicationUtil util) {
 		this.util = util;
 	}
-	
-	@RequestMapping("selectBus.htm")
-	public ModelAndView selectBus(
-			@RequestParam(required = false, defaultValue = "", value = "data") String data) {
-		ObjectMapper mapper = new ObjectMapper();
-		ModelAndView modelAndView = new ModelAndView("review");
-		modelAndView.addObject("data", data);
-
-		try {
-			HashMap map = mapper.readValue(data, HashMap.class);
-			modelAndView.addObject("mapdata", map);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return modelAndView;
-	}
-
 
 }
