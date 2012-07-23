@@ -1,3 +1,5 @@
+@font-face{font-family: 'WebRupee';src: url('fonts/WebRupee.V2.0.eot');src: local('WebRupee'), url('fonts/WebRupee.V2.0.ttf') format('truetype'), url('fonts/WebRupee.V2.0.woff') format('woff'), url('fonts/WebRupee.V2.0.svg') format('svg');font-weight: normal;font-style: normal;}
+.WebRupee{font-family: 'WebRupee';}
 .IT {
 	background: url("images/flightimg_new.png") no-repeat scroll -23px 6px
 		transparent;
@@ -392,7 +394,7 @@ margin-top: 7px;
 }
 
 
-.car_logo{
+.car_logo1{
 	background: url("images/car-logo.png") no-repeat scroll 0 0 transparent;
 	height: 128px;
 	width: 128px;
