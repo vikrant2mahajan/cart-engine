@@ -25,7 +25,9 @@ public class ApplicationUtil implements ApplicationContextAware {
 	
 	private static ApplicationContext context = null;
 	
-	private static Map<String,CityMapper> cityMap;
+	private static Map<String,CityMapper> cityMapByName;
+	
+	private static Map<String,CityMapper> cityMapByCode;
 	
 	private static List<CityMapper> cityList;
 
@@ -39,12 +41,20 @@ public class ApplicationUtil implements ApplicationContextAware {
 		context = applicationContext;
 	}
 	
-	public static Map<String,CityMapper> getCityMap(){
-		if(cityMap==null){
+	public static Map<String,CityMapper> getCityMapByName(){
+		if(cityMapByName==null){
 			List<CityMapper> cityList = cityMapperData.getAllCities();
-			populateMap(cityList);
+			populateMapByName(cityList);
 		}
-		return cityMap;
+		return cityMapByName;
+	}
+	
+	public static Map<String,CityMapper> getCityMapByCode(){
+		if(cityMapByCode==null){
+			List<CityMapper> cityList = cityMapperData.getAllCities();
+			populateMapByCode(cityList);
+		}
+		return cityMapByCode;
 	}
 	
 	public static List<CityMapper> getCityList(){
@@ -54,11 +64,20 @@ public class ApplicationUtil implements ApplicationContextAware {
 		return cityList;
 	}
 
-	private static void populateMap(List<CityMapper> cityList) {
-		cityMap = new HashMap<String, CityMapper>();
+	private static void populateMapByName(List<CityMapper> cityList) {
+		cityMapByName = new HashMap<String, CityMapper>();
 		if(cityList!=null && cityList.size()>0){
 			for(CityMapper city:cityList){
-				cityMap.put(city.getCtyName(), city);
+				cityMapByName.put(city.getCtyName(), city);
+			}
+		}
+	}
+	
+	private static void populateMapByCode(List<CityMapper> cityList) {
+		cityMapByCode = new HashMap<String, CityMapper>();
+		if(cityList!=null && cityList.size()>0){
+			for(CityMapper city:cityList){
+				cityMapByCode.put(city.getCtyFltcode(), city);
 			}
 		}
 	}
