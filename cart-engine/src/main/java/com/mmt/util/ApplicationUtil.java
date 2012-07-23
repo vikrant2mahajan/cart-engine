@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ServletContextAware;
 
 import com.ibm.wsdl.extensions.PopulatedExtensionRegistry;
 import com.mmt.data.dao.api.CityMapperData;
@@ -20,7 +24,7 @@ import com.mmt.engine.core.utils.FlightCombination;
 import com.mmt.engine.core.utils.Quote;
 
 @Component("util")
-public class ApplicationUtil implements ApplicationContextAware {
+public class ApplicationUtil implements ApplicationContextAware, ServletContextAware {
 
 	@Autowired
 	private CityMapperData cityMapperData;
@@ -116,5 +120,10 @@ public class ApplicationUtil implements ApplicationContextAware {
 	public void setCityMapperData(CityMapperData cityMapperData) {
 		this.cityMapperData = cityMapperData;
 	}
-	
+
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		servletContext.setAttribute("cityMapByCode", getCityMapByCode());
+		servletContext.setAttribute("cityMapByName", getCityMapByName());
+	}
 }
