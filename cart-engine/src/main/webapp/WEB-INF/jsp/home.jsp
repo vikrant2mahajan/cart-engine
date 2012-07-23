@@ -234,8 +234,8 @@
 					</div>
 
 					<div class="ui-block-b">
-						<label for="hadultCount" class="ui-input-text">Adults:</label> <input
-							type="number" name="hadultCount" id="adultCount" value=""
+						<label for="hadultcount" class="ui-input-text">Adults:</label> <input
+							type="number" name="hadultcount" id="hadultcount" value=""
 							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
 					</div>
 

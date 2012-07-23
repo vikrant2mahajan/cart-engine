@@ -27,15 +27,17 @@ public class HotelRSParser {
 		HotelRS response = new HotelRS();
 		List<com.mmt.services.product.hotels.Hotel> respHotelList = new ArrayList<com.mmt.services.product.hotels.Hotel>();
 		List<HotelSearchResults> results = body.getHotelSearchResults();
-		List<Hotels> hotelsList = results.get(0).getHotels();
-		if (hotelsList != null && hotelsList.size() > 0) {
-			Hotels hotels = hotelsList.get(0);
-			List<Hotel> hotelList = hotels.getHotel();
-			if (hotelList != null && hotelList.size() > 0) {
-				for (Hotel hotel : hotelList) {
-					com.mmt.services.product.hotels.Hotel myHotel = createHotel(hotel);
-					if (myHotel != null) {
-						respHotelList.add(myHotel);
+		if (results != null && results.size() > 0) {
+			List<Hotels> hotelsList = results.get(0).getHotels();
+			if (hotelsList != null && hotelsList.size() > 0) {
+				Hotels hotels = hotelsList.get(0);
+				List<Hotel> hotelList = hotels.getHotel();
+				if (hotelList != null && hotelList.size() > 0) {
+					for (Hotel hotel : hotelList) {
+						com.mmt.services.product.hotels.Hotel myHotel = createHotel(hotel);
+						if (myHotel != null) {
+							respHotelList.add(myHotel);
+						}
 					}
 				}
 			}
