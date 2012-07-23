@@ -8,7 +8,7 @@ var cart = {};
 					$("#requestData").val(
 							JSON.stringify(results['BUS'][$(this).parents("li")
 									.attr("id")]));
-					$("#busForm").submit();
+					$("#listingForm").submit();
 
 				});
 
@@ -19,7 +19,7 @@ var cart = {};
 					$("#requestData").val(
 							JSON.stringify(results['Flight'][$(this).parents(
 									"li").attr("id")]));
-					$("#busForm").submit();
+					$("#listingForm").submit();
 
 				});
 
