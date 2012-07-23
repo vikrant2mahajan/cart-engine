@@ -3,14 +3,13 @@ package com.mmt.services.utils;
 import com.mmt.search.RequestHolder;
 
 public class Suggestion {
+	
 	private String imgUrl;
-	
 	private String price;
-	
 	private RequestHolder request;
-	
 	private String description;
-
+	private String name;
+	
 	public String getImgUrl() {
 		return imgUrl;
 	}
@@ -43,4 +42,13 @@ public class Suggestion {
 		this.description = description;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
 }

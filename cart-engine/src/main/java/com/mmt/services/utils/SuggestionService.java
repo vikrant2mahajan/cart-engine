@@ -121,6 +121,8 @@ public class SuggestionService implements ISuggestionService{
 		Suggestion suggestion = new Suggestion();
 		suggestion.setRequest(holder);
 		suggestion.setPrice(String.valueOf(ApplicationUtil.getFlightPrice(fltList)));
+		suggestion.setName(fltList.get(0).getAirlineName());
+		suggestion.setImgUrl(fltList.get(0).getCarrierCode());
 		suggestion.setDescription(desc);
 		suggestionList.add(suggestion);
 	}
@@ -175,6 +177,7 @@ public class SuggestionService implements ISuggestionService{
 				Suggestion suggestion = new Suggestion();
 				suggestion.setRequest(holder);
 				suggestion.setPrice(busList.get(0).getSeatFare());
+				suggestion.setName(busList.get(0).getBusType());
 				suggestion.setDescription(desc);
 				suggestionList.add(suggestion);
 			}
@@ -223,6 +226,7 @@ public class SuggestionService implements ISuggestionService{
 			suggestion.setRequest(holder);
 			suggestion.setPrice(cheapestCar.getBookingPriceToDisplay());
 			suggestion.setImgUrl(cheapestCar.getCarLogo());
+			suggestion.setName(cheapestCar.getCarMake()+" "+cheapestCar.getCarModel());
 			suggestion.setDescription(desc);
 			suggestionList.add(suggestion);
 		}
@@ -275,6 +279,7 @@ public class SuggestionService implements ISuggestionService{
 		Collections.sort(response.getHotels(), new HotelPriceComparator());
 		suggestion.setPrice(response.getHotels().get(0).getLowestRate());
 		suggestion.setImgUrl(response.getHotels().get(0).getUrlPic());
+		suggestion.setDescription(response.getHotels().get(0).getHotelName());
 		suggestion.setDescription(desc);
 		suggestionList.add(suggestion);
 	}
