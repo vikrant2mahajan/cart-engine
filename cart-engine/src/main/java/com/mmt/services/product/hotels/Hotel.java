@@ -1,6 +1,6 @@
 package com.mmt.services.product.hotels;
 
-public class Hotel {
+public class Hotel{
 	private String hotelId;
 
 	private String hotelName;
@@ -100,6 +100,4 @@ public class Hotel {
 	public void setParkingAvail(boolean isParkingAvail) {
 		this.isParkingAvail = isParkingAvail;
 	}
-	
-	
 }
