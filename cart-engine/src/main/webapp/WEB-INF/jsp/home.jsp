@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+
 <link rel="stylesheet"
 	href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
 <link rel="stylesheet"
@@ -19,6 +19,9 @@
 <script type="text/javascript"
 	src="http://dev.jtsage.com/cdn/datebox/latest/jquery.mobile.datebox.min.js"></script>
 <link rel="stylesheet" href="css/styles.css" />
+<script type="text/javascript" src="js/application.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
+
 </head>
 <script>
 	$(document).ready(function() {

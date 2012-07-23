@@ -1,5 +1,17 @@
-@font-face{font-family: 'WebRupee';src: url('fonts/WebRupee.V2.0.eot');src: local('WebRupee'), url('fonts/WebRupee.V2.0.ttf') format('truetype'), url('fonts/WebRupee.V2.0.woff') format('woff'), url('fonts/WebRupee.V2.0.svg') format('svg');font-weight: normal;font-style: normal;}
-.WebRupee{font-family: 'WebRupee';}
+@font-face {
+	font-family: 'WebRupee';
+	src: url('fonts/WebRupee.V2.0.eot');
+	src: local('WebRupee'), url('fonts/WebRupee.V2.0.ttf')
+		format('truetype'), url('fonts/WebRupee.V2.0.woff') format('woff'),
+		url('fonts/WebRupee.V2.0.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.WebRupee {
+	font-family: 'WebRupee';
+}
+
 .IT {
 	background: url("images/flightimg_new.png") no-repeat scroll -23px 6px
 		transparent;
@@ -67,9 +79,10 @@
 }
 
 .cart_item {
+	cursor: default;
 	margin: 4px !important;
 	padding: 5px;
-	cursor: default;
+	width: 150px;
 }
 
 .cart_item p {
@@ -269,134 +282,223 @@
 	margin-top: 6px;
 	position: absolute;
 }
-.amenities{
-background: url("images/amenities.png") no-repeat scroll 0 0
-		transparent;	
-margin-top: 7px;
+
+.lastseat {
+	background-color: #FF3333;
+	border: 1px solid #A30000;
+	border-radius: 3px 3px 3px 3px;
+	color: white;
+	font-family: inherit;
+	font-size: 12px;
+	padding: 0;
+	text-align: center;
+	width: 73px !important;
 }
 
+.warningseat {
+	background-color: #FFFF87;
+	border: 1px solid #A3A32E;
+	border-radius: 3px 3px 3px 3px;
+	color: #454500;
+	font-family: inherit;
+	font-size: 12px;
+	padding: 0;
+	text-align: center;
+	width: 73px !important;
+}
+
+.bus_bg {
+	background: url("images/bus(2).png") no-repeat 0 0 transparent;
+	width: 128px !important;
+	height: 128px;
+}
+
+.taxi_bg {
+	background: url("images/taxi(1).png") no-repeat 0 0 transparent;
+	width: 128px !important;
+	height: 128px;
+}
+
+.plane_bg {
+	background: url("images/air_plane.png") no-repeat 0 0 transparent;
+	width: 128px !important;
+	height: 128px;
+}
+
+.hotel_bg {
+	background: url("images/sleep_hotel.png") no-repeat 0 0 transparent;
+	width: 128px !important;
+	height: 128px;
+}
+
+.heading {
+	padding: 10px;
+}
+
+.ui-icon-trip {
+	background: url("images/holiday.png") no-repeat 0 0 transparent
+		!important;
+	width: 24px;
+	height: 24px;
+}
+
+.panel {
+	bottom: 50px;
+	margin-left: 60px;
+	position: absolute;
+	width: 90%;
+}
+
+.cart {
+	background: url("images/cart.png") no-repeat 0 0 transparent !important;
+	width: 64px;
+	height: 64px;
+}
+
+.ui-effects-transfer {
+	background: none repeat scroll 0 0 #FAFAFA;
+	border: 1px solid black;
+	opacity: 0.8;
+	z-index: 1000000;
+}
+
+.latest {
+	display: none;
+}
+
+}
+.amenities {
+	background: url("images/amenities.png") no-repeat scroll 0 0 transparent;
+	margin-top: 7px;
+}
 
 .am_active_1 {
-    height: 30px;
-    width: 30px;
-    background-position: 0px 0px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: 0px 0px;
+	float: left;
 }
 
 .am_active_2 {
-    height: 30px;
-    width: 30px;
-    background-position: -30px 0px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -30px 0px;
+	float: left;
 }
 
 .am_active_3 {
-    height: 30px;
-    width: 30px;
-    background-position: -60px 0px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -60px 0px;
+	float: left;
 }
+
 .am_active_4 {
-    height: 30px;
-    width: 30px;
-    background-position: -90px 0px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -90px 0px;
+	float: left;
 }
+
 .am_active_5 {
-    height: 30px;
-    width: 30px;
-    background-position: -120px 0px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -120px 0px;
+	float: left;
 }
 
 .am_inactive_1 {
-    height: 30px;
-    width: 30px;
-    background-position: 0px -30px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: 0px -30px;
+	float: left;
 }
 
 .am_inactive_2 {
-    height: 30px;
-    width: 30px;
-    background-position: 0px -30px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: 0px -30px;
+	float: left;
 }
 
 .am_inactive_3 {
-    height: 30px;
-    width: 30px;
-    background-position: -60px -30px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -60px -30px;
+	float: left;
 }
+
 .am_inactive_4 {
-    height: 30px;
-    width: 30px;
-    background-position: -90px -30px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -90px -30px;
+	float: left;
 }
+
 .am_inactive_5 {
-    height: 30px;
-    width: 30px;
-    background-position: -120px -30px;
-    float: left;
+	height: 30px;
+	width: 30px;
+	background-position: -120px -30px;
+	float: left;
 }
 
-.nowrap_hotel{
-    overflow: visible;
-    white-space: nowrap;
+.nowrap_hotel {
+	overflow: visible;
+	white-space: nowrap;
 }
 
-.aircon{
-	background: url("images/aircon.png") no-repeat scroll 0 0
-		transparent;
+.aircon {
+	background: url("images/aircon.png") no-repeat scroll 0 0 transparent;
 	float: left;
 	height: 20px;
-    width: 20px;
-    margin-top: 7px;
+	width: 20px;
+	margin-top: 7px;
 }
-.audio{
-	background: url("images/audio.png") no-repeat scroll 0 0
-		transparent;
+
+.audio {
+	background: url("images/audio.png") no-repeat scroll 0 0 transparent;
 	float: left;
 	height: 20px;
-    width: 20px;
-    margin-top: 10px;
+	width: 20px;
+	margin-top: 10px;
 }
-.car_logo{
-	 margin-top: 5px;
+
+.car_logo {
+	margin-top: 5px;
 }
+
 .listing-font {
-    font-size: 14px;
-    margin-top: 15px;
+	font-size: 14px;
+	margin-top: 15px;
 }
 
-.airplane{
+.airplane {
 	background: url("images/air_plane.png") no-repeat scroll 0 0 transparent;
 	height: 128px;
 	width: 128px;
-
 }
 
-
-.hotels{
+.hotels {
 	background: url("images/hotels.png") no-repeat scroll 0 0 transparent;
 	height: 128px;
 	width: 128px;
-
 }
 
-.bus_logo{
+.bus_logo {
 	background: url("images/bus-logo.png") no-repeat scroll 0 0 transparent;
 	height: 128px;
 	width: 128px;
-
 }
 
-
-.car_logo1{
+.car_logo1 {
 	background: url("images/car-logo.png") no-repeat scroll 0 0 transparent;
 	height: 128px;
 	width: 128px;
+}
 
+.fare {
+	float: right;
+	margin-right: 25px;
+	padding: 10px;
+	width: 400px;
 }

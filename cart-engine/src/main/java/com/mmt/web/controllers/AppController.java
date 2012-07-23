@@ -1,12 +1,21 @@
 package com.mmt.web.controllers;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,6 +24,7 @@ import com.mmt.data.models.BusRequestBean;
 import com.mmt.data.models.CarRequestBean;
 import com.mmt.data.models.FlightRequestBean;
 import com.mmt.data.models.HotelRequestBean;
+import com.mmt.data.models.ProductCart;
 import com.mmt.search.RequestHolder;
 import com.mmt.search.ResponseHolder;
 import com.mmt.search.SearchService;
@@ -32,7 +42,7 @@ public class AppController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Autowired
 	private ApplicationUtil util;
 
@@ -118,7 +128,7 @@ public class AppController {
 	@RequestMapping("home.htm")
 	public ModelAndView getHomeUI() {
 		ModelAndView modelAndView = new ModelAndView("home");
-//		List cities = cityMapperData.getAllCities();
+		// List cities = cityMapperData.getAllCities();
 		List cities = util.getCityList();
 		modelAndView.addObject("cities", cities);
 		return modelAndView;
@@ -148,7 +158,7 @@ public class AppController {
 	@RequestMapping("carReq.htm")
 	public ModelAndView getCarListing(CarRequestBean formDetails) {
 		ModelAndView modelAndView = new ModelAndView("common_listing");
-		try{
+		try {
 			RequestHolder holder = new RequestHolder();
 			CarRQ request = new CarRQ();
 			String depDate = formDetails.getcDepDate();
@@ -161,7 +171,8 @@ public class AppController {
 			request.setOrigin(formDetails.getcDepCity());
 			request.setCapacity("4");
 			request.setServiceType(ServiceType.OUTSTATION_USAGE);
-			if(formDetails.getcDepCity().equalsIgnoreCase(formDetails.getcRetCity())){
+			if (formDetails.getcDepCity().equalsIgnoreCase(
+					formDetails.getcRetCity())) {
 				request.setServiceType(ServiceType.LOCAL_USAGE);
 				request.setDestination(null);
 			}
@@ -169,7 +180,7 @@ public class AppController {
 			holder.setType(ProductType.CAR);
 			ResponseHolder holder2 = searchService.search(holder);
 			modelAndView.addObject("result", holder2);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return modelAndView;
@@ -204,10 +215,30 @@ public class AppController {
 		return modelAndView;
 	}
 
+	@RequestMapping("selectBus.htm")
+	public ModelAndView selectBus(
+			@RequestParam(required = false, defaultValue = "", value = "data") String data) {
+		ObjectMapper mapper = new ObjectMapper();
+		ModelAndView modelAndView = new ModelAndView("review");
+		modelAndView.addObject("data", data);
+
+		try {
+			HashMap map = mapper.readValue(data, HashMap.class);
+			modelAndView.addObject("mapdata", map);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modelAndView;
+	}
+
 	@RequestMapping("hotelReq.htm")
 	public ModelAndView getHotelListing(HotelRequestBean formDetails) {
 		ModelAndView modelAndView = new ModelAndView("common_listing");
-		try{
+		try {
 			RequestHolder holder = new RequestHolder();
 			HotelRQ request = new HotelRQ();
 			request.setCheckInDate(formDetails.gethCheckInDate());
@@ -221,11 +252,66 @@ public class AppController {
 			holder.setRequest(request);
 			ResponseHolder holder2 = searchService.search(holder);
 			modelAndView.addObject("result", holder2);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return modelAndView;
+	}
+
+	@RequestMapping("addItemToCart.htm")
+	public @ResponseBody
+	boolean addItemToCart(@RequestParam("item") String item,
+			@RequestParam("type") String type, @RequestParam("fare") int fare,
+			HttpSession session) {
+		ObjectMapper mapper = new ObjectMapper();
+
+		Object cart = session.getAttribute("cart");
+		if (cart != null) {
+			ProductCart prodCart = (ProductCart) cart;
+			if (prodCart.getProducts().containsKey(type))
+				return false;
+			else {
+				prodCart.getProducts().put(type, item);
+				try {
+					HashMap map = mapper.readValue(item, HashMap.class);
+					prodCart.getProducts().put(type + "M", map);
+				} catch (JsonParseException e) {
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				prodCart.setFare(fare);
+				return true;
+			}
+		} else {
+			ProductCart prodCart = new ProductCart();
+			prodCart.setFare(fare);
+
+			prodCart.getProducts().put(type, item);
+			try {
+				HashMap map = mapper.readValue(item, HashMap.class);
+				prodCart.getProducts().put(type + "M", map);
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			session.setAttribute("cart", prodCart);
+			return true;
+		}
+	}
+
+	@RequestMapping("getCart.htm")
+	public @ResponseBody
+	ProductCart getCart(HttpSession session) {
+		return (ProductCart) session.getAttribute("cart");
 	}
 
 	public ApplicationUtil getUtil() {

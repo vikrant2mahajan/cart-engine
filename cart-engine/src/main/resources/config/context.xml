@@ -35,7 +35,7 @@
 
 	<bean id="rmiService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean"
 		scope="singleton">
-		<property name="serviceUrl" value="rmi://10.86.12.10:1199/RMIService" />
+		<property name="serviceUrl" value="rmi://10.86.12.12:1199/RMIService" />
 		<property name="serviceInterface"
 			value="com.mmt.engine.core.clients.RMIServiceLocator" />
 	</bean>

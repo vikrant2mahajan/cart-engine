@@ -12,11 +12,15 @@
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.mobile-1.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
+<script type="text/javascript" src="js/application.js"></script>
+
 <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" />
 <link rel="stylesheet" href="css/jquery.mobile.structure-1.1.1.min.css" />
 <link rel="stylesheet" href="css/styles.css" />
 <!-- <link rel="stylesheet" href="css/jquery.mobile.theme-1.1.1.min.css" /> -->
 <link rel="stylesheet" href="css/jqm-docs.css" />
+<link rel="stylesheet" href="css/styles.css" />
+
 <style type="text/css">
 .ui-effects-transfer {
 	border: 1px solid black;
@@ -27,19 +31,28 @@
 </head>
 
 <body>
-	<h2>Hello World!</h2>
-	<div data-role="page" class="type-interior">
 
+	<div data-role="page" class="type-interior">
+		<script type="text/javascript">
+			var results = {};
+		</script>
 		<div data-role="content">
 		</br>
 				<ul data-role="listview" data-split-icon="arrow-r"
 					data-split-theme="d" data-theme="d" data-divider-theme="d"
-					data-filter="true"
-					data-filter-placeholder="Filter by airline / refundable / stops"
+					data-filter="true" data-filter-placeholder="Filter"
 					data-inset="true">
 
 
 					<c:if test="${result.type=='FLIGHT'}">
+						<script>
+							results["Flight"] = {};
+						</script>
+						<form action="selectBus.htm" method="get" id="busForm">
+							<input type="hidden" id="requestData" name="data" /> <input
+						type="hidden" name="type" value="${result.type}" />
+						</form>
+						
 						<c:forEach var="flight"
 							items="${result.response.response.searchResult.results }"
 							varStatus="status">
@@ -64,11 +77,27 @@
 												.getCombinationPrice((FlightCombination) request
 														.getAttribute("flight")));
 							%>
-
-
-							<li><a href="index.html"> <c:forEach var="leg"
+							
+							<script>
+							var flight={};
+							flight['fare']=${fare};
+							flight['fromCity']='${cityMapByCode[flight.flightSegmentList[0].origin].ctyName}';
+							flight['toCity']='${cityMapByCode[flight.flightSegmentList[0].destination].ctyName}';
+							</script>
+							<li data-type='FLIGHT' id="${flight.flightSegmentList[0].flightNumber}"><a href="#selectFlight"> <c:forEach var="leg"
 										varStatus="statleg" items="${flight.flightSegmentList}">
-
+																	
+										<c:if test="${leg.carrierCode=='JK' or leg.carrierCode=='JL' }">								
+											<c:set target="${leg}" property="carrierCode" value="9W"></c:set>							
+										</c:if>
+										<script>			
+										flight['type']='FLIGHT';
+										flight['airlineName']='${leg.airlineName}';
+										flight['carrierCode']=('${leg.carrierCode}');											
+										flight['flightNumber']='${leg.flightNumber}';
+										
+										</script>
+							
 										<fmt:parseDate value="${leg.departure}" var="dep"
 											pattern="yyyy-MM-dd'T'HH:mm:ss" />
 										<fmt:parseDate value="${leg.arrival}" var="arv"
@@ -94,6 +123,12 @@
 												</p>
 												<p>${cityMapByCode[leg.origin].ctyName}</p>
 											</div>
+											<script type="text/javascript">
+											flight['departure']='<fmt:formatDate pattern="H:mm a" value="${dep}" />';
+												flight['arrival']='<fmt:formatDate pattern="H:mm a" value="${arv}" />'
+												results.Flight['${leg.flightNumber}']=flight;
+											
+											</script>
 											<div class="ui-block-c">
 												</br>
 												<p>
@@ -127,6 +162,17 @@
 											</div>
 
 											<c:if test="${statleg.index==0}">
+
+												<c:if
+													test="${leg.lastSeatAvailabilityNo<5&&leg.lastSeatAvailabilityNo>1 }">
+													<p class="ui-li-aside warningseat">
+														${leg.lastSeatAvailabilityNo} Seats at:</p>
+												</c:if>
+												<c:if test="${leg.lastSeatAvailabilityNo==1 }">
+													<p class="ui-li-aside lastseat">Last Seat at:</p>
+												</c:if>
+
+
 												<div class="ui-block-e">
 													</br>
 													<h1 class="big"
@@ -146,22 +192,50 @@
 
 							</a></li>
 						</c:forEach>
+						<script>
+						console.log(results);
+						</script>
 					</c:if>
 
 					<c:if test="${result.type=='BUS'}">
+						<script>
+							results["BUS"] = {};
+						</script>
+						<form action="selectBus.htm" method="get" id="busForm">
+							<input type="hidden" id="requestData" name="data" /> <input
+								type="hidden" name="type" value="${result.type}" />
 
-
+						</form>
 						<li data-role="list-divider">${result.response.wsCheckAvailabilityRS.trip[0].fromCity}
 							- ${result.response.wsCheckAvailabilityRS.trip[0].toCity}<span
 							class="ui-li-count">${fn:length(result.response.wsCheckAvailabilityRS.trip)}
 								Buses</span>
-
-
 						</li>
-
 						<c:forEach var="busitem"
 							items="${result.response.wsCheckAvailabilityRS.trip }">
-							<li data-filtertext="IT,Kingfisher"><a href="index.html">
+
+							<script>
+								var bus = {};
+								bus.type="BUS";
+								bus.groupName = '${busitem.groupName}';
+								bus.fromCity = '${busitem.fromCity}';
+								bus.toCity = '${busitem.toCity}';
+								bus.seatType = '${busitem.seatType }';
+								try {
+									bus.sleeperFare = parseInt('${busitem.sleeperFare}');
+								} catch (e) {
+									bus.sleeperFare = null;
+								}
+								try {
+									bus.seaterFare = parseInt('${busitem.seatFare}');
+								} catch (e) {
+									bus.seaterFare = null;
+								}
+							</script>
+
+
+							<li id=${busitem.tripId } data-type="BUS"><a
+								href="#selectBus">
 									<div class="ui-grid-d">
 										<div class="ui-block-a">
 											<br />
@@ -184,6 +258,12 @@
 											</p>
 											<p>${busitem.fromCity}</p>
 										</div>
+										<script>
+											bus.departureTime = '<fmt:formatDate pattern="hh:mm a"
+																value="${dep}" />';
+											results.BUS['${busitem.tripId}'] = bus;
+										</script>
+
 										<div class="ui-block-c">
 											</br>
 											<p>
