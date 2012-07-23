@@ -71,11 +71,6 @@
 										pattern="EEEEE, MMMM d, yyyy" value="${depDate}" /><span
 									class="ui-li-count">${fn:length(result.response.response.searchResult.results)}
 										Flights</span>
-
-
-																					
-
-
 								</li>
 							</c:if>
 
@@ -392,9 +387,21 @@
 
 					</c:if>
 					<c:if test="${result.type=='CAR'}">
+					    <script>
+							results["Car"] = {};
+						</script>
+						<form action="selectBus.htm" method="get" id="listingForm">
+							<input type="hidden" id="requestData" name="data" /> <input
+								type="hidden" name="type" value="${result.type}" />
+
+						</form>
+	
 						<c:forEach var="car"
 							items="${result.response.response}"
 							varStatus="status">
+							<script>
+							var car={};
+							</script>
 							<c:if test="${status.index==0 }">
 							<li data-role="list-divider">
 								${cityMapByCode[result.response.fromCity].ctyName}-${cityMapByCode[result.response.toCity].ctyName}-
@@ -402,7 +409,10 @@
 									Cars </span>
 							</li>
 						</c:if>
-							<li><a href="index.html">
+							<li id="car_${status.index}" data-type="CAR"><a href="#"  >
+							<script>
+							car['id']='car_${status.index}';
+							</script>
 							<div class="ui-grid-c">
 							<div class="ui-block-a">
 								<div>${car.carMake} ${car.carModel}</div>
@@ -427,9 +437,16 @@
 								<c:if test="${result.response.serviceType == 'Local Usage'}">
 									<div>${car.usageType}</div>
 									<div>(4 Hr/${car.kmLimitToDisplay} Km)</div>
+									<script>
+									car['usage']='${car.usageType}';
+									car['kmUsage']='${car.kmLimitToDisplay}';
+									</script>
 								</c:if>
 								<c:if test="${result.response.serviceType == 'Outstation'}">
 									<div class="listing-font">Max. ${car.kmLimitToDisplay} Km/Day</div>
+									<script>
+									   car['kmUsage']='${car.kmLimitToDisplay}';
+									</script>
 								</c:if>
 								</div>
 								<div class="ui-block-d">
@@ -439,6 +456,17 @@
 							</div>
 					</a> 
 					</li>
+					<script>
+
+					
+					car['fare']=parseInt('${car.bookingPriceToDisplay}');
+					car['fromCity']='${cityMapByCode[result.response.fromCity].ctyName}';
+					car['toCity']='${cityMapByCode[result.response.toCity].ctyName}';
+					car['name']='${car.carMake} ${car.carModel}';
+					car['logo']='${car.carLogo}';
+					car['type']='CAR';
+					results.Car[car['id']] = car;	
+					</script>
 					</c:forEach>
 					</c:if>
 					
@@ -514,15 +542,11 @@
 					</c:forEach>
 					</c:if>
 
-
-
-
 				</ul>
 			</div>
 			<!-- Content -->
 		<div data-role="footer" data-position="fixed">
 			     <h1><c:if test="${result.type=='FLIGHT'}">Flight</c:if><c:if test="${result.type=='BUS'}">Bus</c:if><c:if test="${result.type=='CAR'}">Car</c:if><c:if test="${result.type=='HOTEL'}">Hotels</c:if></h1>
-		
 		 </div>
 
 
