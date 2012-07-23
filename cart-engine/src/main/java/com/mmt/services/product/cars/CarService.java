@@ -5,9 +5,11 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-import com.makemytrip.carrental.webservices.GetLocalCarListRequest;
-import com.makemytrip.carrental.webservices.GetOutstationCarListRequest;
-import com.makemytrip.carrental.webservices.SeatingCapacityList;
+import com.mmt.car.ws.GetLocalCarListRequest;
+import com.mmt.car.ws.GetLocalCarListResponse;
+import com.mmt.car.ws.GetOutstationCarListRequest;
+import com.mmt.car.ws.GetOutstationCarListResponse;
+import com.mmt.car.ws.SeatingCapacityList;
 import com.mmt.services.product.IProductService;
 import com.mmt.services.product.IRequest;
 import com.mmt.services.product.IResponse;
@@ -24,14 +26,19 @@ public class CarService implements IProductService {
 	public IResponse search(IRequest req) {
 		CarRQ request = (CarRQ) req;
 		IRequest carRequest = null;
-		if (request.getServiceType().equalsIgnoreCase(ServiceType.LOCAL_USAGE)) {
+		CarRS carResponse = new CarRS();
+		carResponse.setServiceType(request.getServiceType());
+		if(request.getServiceType().equalsIgnoreCase(ServiceType.LOCAL_USAGE)){
 			carRequest = getLocalCarRequest(request);
-		} else {
+		}else{
 			carRequest = getOutStationRequest(request);
 		}
-		IResponse response = (IResponse) carWebServiceTemplate
-				.marshalSendAndReceive(carRequest);
-		return response;
+		if(request.getServiceType().equalsIgnoreCase(ServiceType.LOCAL_USAGE)){
+			carResponse.setResponse(((GetLocalCarListResponse)carWebServiceTemplate.marshalSendAndReceive(carRequest)).getResultsList().getResult());
+		}else{
+			carResponse.setResponse(((GetOutstationCarListResponse)carWebServiceTemplate.marshalSendAndReceive(carRequest)).getResultsList().getResult());
+		}
+		return carResponse;
 	}
 
 	private IRequest getOutStationRequest(CarRQ request) {
@@ -64,8 +71,12 @@ public class CarService implements IProductService {
 		carRequest.setServiceType(request.getServiceType());
 		carRequest.setMonth(request.getMonth());
 		carRequest.setYear(request.getYear());
+		carRequest.setHour("10");
+		carRequest.setMinute("00");
 		carRequest.setSortKey("price");
 		carRequest.setSortOrder("asc");
+		carRequest.setMinAmount("");
+		carRequest.setMaxAmount("");
 		carRequest.setNoOfRecords(0);
 		return carRequest;
 	}

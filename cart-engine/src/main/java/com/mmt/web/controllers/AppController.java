@@ -142,19 +142,31 @@ public class AppController {
 
 	@RequestMapping("carReq.htm")
 	public ModelAndView getCarListing(CarRequestBean formDetails) {
-		ModelAndView modelAndView = new ModelAndView("home");
-		CarRQ request = new CarRQ();
-		String depDate = formDetails.getcDepDate();
-		String[] dateComponents = depDate.split("-");
+		ModelAndView modelAndView = new ModelAndView("common_listing");
+		try{
+			RequestHolder holder = new RequestHolder();
+			CarRQ request = new CarRQ();
+			String depDate = formDetails.getcDepDate();
+			String[] dateComponents = depDate.split("-");
 
-		request.setDate(dateComponents[2]);
-		request.setDestination(formDetails.getcRetCity());
-		request.setMonth(dateComponents[1]);
-		request.setYear(dateComponents[0]);
-		request.setOrigin(formDetails.getcDepCity());
-		request.setCapacity("4");
-		request.setServiceType(ServiceType.OUTSTATION_USAGE);
-
+			request.setDate(dateComponents[2]);
+			request.setDestination(formDetails.getcRetCity());
+			request.setMonth(dateComponents[1]);
+			request.setYear(dateComponents[0]);
+			request.setOrigin(formDetails.getcDepCity());
+			request.setCapacity("4");
+			request.setServiceType(ServiceType.OUTSTATION_USAGE);
+			if(formDetails.getcDepCity().equalsIgnoreCase(formDetails.getcRetCity())){
+				request.setServiceType(ServiceType.LOCAL_USAGE);
+				request.setDestination(null);
+			}
+			holder.setRequest(request);
+			holder.setType(ProductType.CAR);
+			ResponseHolder holder2 = searchService.search(holder);
+			modelAndView.addObject("result", holder2);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		return modelAndView;
 	}
 
@@ -189,15 +201,24 @@ public class AppController {
 
 	@RequestMapping("hotelReq.htm")
 	public ModelAndView getHotelListing(HotelRequestBean formDetails) {
-		ModelAndView modelAndView = new ModelAndView("home");
-		HotelRQ request = new HotelRQ();
-		request.setCheckInDate(formDetails.gethCheckInDate());
-		request.setCheckOutDate(formDetails.gethCheckOutDate());
-		request.setCityCode(formDetails.gethHotCity());
-		RoomRQ roomRq = new RoomRQ();
-		roomRq.setNoOfAdult(String.valueOf(formDetails.getHadultcount()));
-		roomRq.setNoOfChild(String.valueOf(formDetails.getHchildCount()));
-		request.getNoOfRooms().add(roomRq);
+		ModelAndView modelAndView = new ModelAndView("common_listing");
+		try{
+			RequestHolder holder = new RequestHolder();
+			HotelRQ request = new HotelRQ();
+			request.setCheckInDate(formDetails.gethCheckInDate());
+			request.setCheckOutDate(formDetails.gethCheckOutDate());
+			request.setCityCode(formDetails.gethHotCity());
+			RoomRQ roomRq = new RoomRQ();
+			roomRq.setNoOfAdult(String.valueOf(formDetails.getHadultcount()));
+			roomRq.setNoOfChild(String.valueOf(formDetails.getHchildCount()));
+			request.getNoOfRooms().add(roomRq);
+			holder.setType(ProductType.HOTEL);
+			holder.setRequest(request);
+			ResponseHolder holder2 = searchService.search(holder);
+			modelAndView.addObject("result", holder2);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return modelAndView;
 	}

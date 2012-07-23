@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://carrental.makemytrip.com/webservices")
-package com.makemytrip.carrental.webservices;
+package com.mmt.car.ws;

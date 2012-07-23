@@ -6,7 +6,7 @@
 //
 
 
-package com.makemytrip.carrental.webservices;
+package com.mmt.car.ws;
 
 import java.util.ArrayList;
 import java.util.List;
