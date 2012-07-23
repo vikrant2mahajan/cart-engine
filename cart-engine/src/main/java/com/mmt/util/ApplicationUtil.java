@@ -9,6 +9,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import com.ibm.wsdl.extensions.PopulatedExtensionRegistry;
 import com.mmt.data.dao.api.CityMapperData;
@@ -18,10 +19,11 @@ import com.mmt.engine.core.utils.Flight;
 import com.mmt.engine.core.utils.FlightCombination;
 import com.mmt.engine.core.utils.Quote;
 
+@Component("util")
 public class ApplicationUtil implements ApplicationContextAware {
 
 	@Autowired
-	private static CityMapperData cityMapperData;
+	private CityMapperData cityMapperData;
 	
 	private static ApplicationContext context = null;
 	
@@ -41,7 +43,7 @@ public class ApplicationUtil implements ApplicationContextAware {
 		context = applicationContext;
 	}
 	
-	public static Map<String,CityMapper> getCityMapByName(){
+	public Map<String,CityMapper> getCityMapByName(){
 		if(cityMapByName==null){
 			List<CityMapper> cityList = cityMapperData.getAllCities();
 			populateMapByName(cityList);
@@ -49,7 +51,7 @@ public class ApplicationUtil implements ApplicationContextAware {
 		return cityMapByName;
 	}
 	
-	public static Map<String,CityMapper> getCityMapByCode(){
+	public Map<String,CityMapper> getCityMapByCode(){
 		if(cityMapByCode==null){
 			List<CityMapper> cityList = cityMapperData.getAllCities();
 			populateMapByCode(cityList);
@@ -57,14 +59,14 @@ public class ApplicationUtil implements ApplicationContextAware {
 		return cityMapByCode;
 	}
 	
-	public static List<CityMapper> getCityList(){
+	public List<CityMapper> getCityList(){
 		if(cityList==null){
 			cityList = cityMapperData.getAllCities();
 		}
 		return cityList;
 	}
 
-	private static void populateMapByName(List<CityMapper> cityList) {
+	private void populateMapByName(List<CityMapper> cityList) {
 		cityMapByName = new HashMap<String, CityMapper>();
 		if(cityList!=null && cityList.size()>0){
 			for(CityMapper city:cityList){
@@ -73,7 +75,7 @@ public class ApplicationUtil implements ApplicationContextAware {
 		}
 	}
 	
-	private static void populateMapByCode(List<CityMapper> cityList) {
+	private void populateMapByCode(List<CityMapper> cityList) {
 		cityMapByCode = new HashMap<String, CityMapper>();
 		if(cityList!=null && cityList.size()>0){
 			for(CityMapper city:cityList){
@@ -105,7 +107,6 @@ public class ApplicationUtil implements ApplicationContextAware {
 		String hour = (int) (diff / (60 * 60 * 1000)) + "h";
 		String min = (int) ((diff % (60 * 60 * 1000))/60000) + "m";
 		return hour + " " + min;
-
 	}
 
 	public CityMapperData getCityMapperData() {
@@ -115,5 +116,5 @@ public class ApplicationUtil implements ApplicationContextAware {
 	public void setCityMapperData(CityMapperData cityMapperData) {
 		this.cityMapperData = cityMapperData;
 	}
-
+	
 }
