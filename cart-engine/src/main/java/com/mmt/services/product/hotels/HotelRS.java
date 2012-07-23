@@ -7,6 +7,8 @@ import com.mmt.services.product.IResponse;
 public class HotelRS implements IResponse {
 
 	private List<Hotel> hotels;
+	
+	private String cityName;
 
 	public List<Hotel> getHotels() {
 		return hotels;
@@ -14,5 +16,13 @@ public class HotelRS implements IResponse {
 
 	public void setHotels(List<Hotel> hotels) {
 		this.hotels = hotels;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
 	}
 }
