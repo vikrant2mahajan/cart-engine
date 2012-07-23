@@ -49,8 +49,7 @@
 								<fmt:parseDate value="${flight.flightSegmentList[0].departure}"
 									var="depDate" pattern="yyyy-MM-dd'T'HH:mm:ss" />
 
-								<li data-role="list-divider">${flight.flightSegmentList[0].origin
-									} to ${flight.flightSegmentList[0].destination } - <fmt:formatDate
+								<li data-role="list-divider">${cityMapByCode[flight.flightSegmentList[0].origin].ctyName} to ${cityMapByCode[flight.flightSegmentList[0].destination].ctyName} - <fmt:formatDate
 										pattern="EEEEE, MMMM d, yyyy" value="${depDate}" /><span
 									class="ui-li-count">${fn:length(result.response.response.searchResult.results)}
 										Flights</span>
@@ -93,7 +92,7 @@
 													<strong><fmt:formatDate pattern="H:mm a"
 															value="${dep}" /></strong>
 												</p>
-												<p>${leg.origin}</p>
+												<p>${cityMapByCode[leg.origin].ctyName}</p>
 											</div>
 											<div class="ui-block-c">
 												</br>
@@ -101,7 +100,7 @@
 													<strong><fmt:formatDate pattern="H:mm a"
 															value="${arv}" /></strong>
 												</p>
-												<p>${leg.destination}</p>
+												<p>${cityMapByCode[leg.destination].ctyName}</p>
 											</div>
 											<div class="ui-block-d">
 												</br>
