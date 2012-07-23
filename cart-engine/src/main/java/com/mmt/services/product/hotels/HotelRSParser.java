@@ -48,8 +48,12 @@ public class HotelRSParser {
 		com.mmt.services.product.hotels.Hotel ourHotel = new com.mmt.services.product.hotels.Hotel();
 		ourHotel.setHotelId(hotel.getId());
 		ourHotel.setHotelName(hotel.getName());
-		if(hotel.getLowestRate()!=null&&hotel.getLowestRate().get(0)!=null &&hotel.getLowestRate().get(0).getLowestRate()!=null
-				&&hotel.getLowestRate().get(0).getLowestRate().get(0)!=null){
+		if(hotel.getLowestRate()!=null 
+				&& hotel.getLowestRate().size()>0
+				&& hotel.getLowestRate().get(0)!=null 
+				&& hotel.getLowestRate().get(0).getLowestRate()!=null
+				&& hotel.getLowestRate().get(0).getLowestRate().size()>0
+				&& hotel.getLowestRate().get(0).getLowestRate().get(0)!=null){
 			ourHotel.setLowestRate(hotel.getLowestRate().get(0).getLowestRate().get(0).getValue());
 		}else{
 			return null;

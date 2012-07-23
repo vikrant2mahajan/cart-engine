@@ -3,6 +3,7 @@ package com.mmt.services.product.hotels;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -29,9 +30,12 @@ public class HotelService implements IProductService{
 	@Autowired
 	RestTemplate restTemplate;
 	
+	@Value("${app.hotel.url}")
+	private String htlUrl; 
+	
 	public IResponse search(IRequest req) {
 		MMTHotelSearchRequest hotelRequest = createHotelSearchRequest(req);
-		ResponseEntity<MMTHotelSearchResponse> response = restTemplate.postForEntity("http://10.86.11.43/HotelsSOA/hotels/search/v1.0/hotelSearch", hotelRequest, MMTHotelSearchResponse.class);
+		ResponseEntity<MMTHotelSearchResponse> response = restTemplate.postForEntity(htlUrl, hotelRequest, MMTHotelSearchResponse.class);
 		return populateHotelResponse(response.getBody());
 	}
 

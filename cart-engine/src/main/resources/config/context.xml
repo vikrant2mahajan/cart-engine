@@ -25,6 +25,7 @@
 				<!-- <value>classpath:mailconfig.properties</value> -->
 				<!-- <value>classpath:application.properties</value> -->
 				<value>classpath:dbconfig.properties</value>
+				<value>classpath:app.properties</value>
 			</list>
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
