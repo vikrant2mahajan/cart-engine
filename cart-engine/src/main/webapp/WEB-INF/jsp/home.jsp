@@ -53,7 +53,7 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content">
-			<form action="flightsReq.htm" method="post">
+			<form action="flightsReq.htm" method="get">
 				<fieldset data-role="controlgroup" data-mini="true"
 					data-type="horizontal">
 					<input type="radio" name="tripType" id="oneWay" value="O"
@@ -151,7 +151,7 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content">
-			<form action="hotelReq.htm" method="post">
+			<form action="hotelReq.htm" method="get">
 
 				<label for="hHotCity">Destination</label> <select name="hHotCity"
 					id="hHotCity" data-role="none" data-style="width:350px;"
@@ -181,13 +181,13 @@
 
 					<div class="ui-block-b">
 						<label for="hadultCount" class="ui-input-text">Adults:</label> <input
-							type="number" name="hadultCount" id="adultCount" value=""
+							type="number" name="hadultcount" id="hadultcount" value=""
 							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
 					</div>
 
 					<div class="ui-block-c">
 						<label for="hchildCount" class="ui-input-text">Children:</label> <input
-							type="number" name="hchildCount" id="childCount" value=""
+							type="number" name="hchildCount" id="hchildcount" value=""
 							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
 					</div>
 				</div>
@@ -223,7 +223,7 @@
 		<!-- /header -->
 
 		<div data-role="content" style="height: 480px;">
-					<form action="busReq.htm" method="post">
+					<form action="busReq.htm" method="get">
 						<div>
 							<label for="bDepCity">Departure</label> <select name="bDepCity"
 								id="bDepCity" data-role="none" data-style="width:350px;"
@@ -291,7 +291,7 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content">
-			<form action="carReq.htm" method="post">
+			<form action="carReq.htm" method="get">
 				<label for="cDepCity">Departure</label> <select name="cDepCity"
 					id="cDepCity" data-role="none" data-style="width:350px;"
 					tabindex="2" class="chosenTextFields">
