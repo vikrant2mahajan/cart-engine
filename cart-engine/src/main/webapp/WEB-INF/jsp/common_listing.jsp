@@ -31,7 +31,7 @@
 	<div data-role="page" class="type-interior">
 
 		<div data-role="content">
-			<div class="content-primary">
+		</br>
 				<ul data-role="listview" data-split-icon="arrow-r"
 					data-split-theme="d" data-theme="d" data-divider-theme="d"
 					data-filter="true"
@@ -130,8 +130,8 @@
 												<div class="ui-block-e">
 													</br>
 													<h1 class="big"
-														title="Rs <fmt:formatNumber type="number" value="${fare}" />">
-														Rs
+														title="<fmt:formatNumber type="number" value="${fare}" />">
+														<span class="WebRupee">Rs</span>
 														<fmt:formatNumber type="number" value="${fare}" />
 													</h1>
 												</div>
@@ -263,7 +263,7 @@
 											<c:if test="${not empty  busitem.sleeperFare }">
 												<h1 class="big"
 													title="Rs <fmt:formatNumber type="number" value="${busitem.sleeperFare }" />">
-													Rs
+													<span class="WebRupee">Rs</span>
 													<fmt:formatNumber type="number"
 														value="${busitem.sleeperFare }" />
 													<c:if
@@ -275,7 +275,7 @@
 											<c:if test="${not empty  busitem.seatFare }">
 												<h1 class="big"
 													title="Rs <fmt:formatNumber type="number" value="${busitem.seatFare }" />">
-													Rs
+													<span class="WebRupee">Rs</span>
 													<fmt:formatNumber type="number"
 														value="${busitem.seatFare }" />
 													<c:if
@@ -331,7 +331,7 @@
 								</c:if>
 								</div>
 								<div class="ui-block-d">
-									<h1 class="big">Rs <fmt:formatNumber type="number" value="${car.bookingPriceToDisplay}"/>
+									<h1 class="big"><span class="WebRupee">Rs</span> <fmt:formatNumber type="number" value="${car.bookingPriceToDisplay}"/>
 									 </h1>
 								</div>
 							</div>
@@ -396,7 +396,7 @@
 								<div class="ui-block-c"></div>
 								<div class="ui-block-d">
 									</br>
-									<h1 class="big">Rs <fmt:formatNumber type="number" value="${hotel.lowestRate}"/>
+									<h1 class="big"><span class="WebRupee">Rs</span> <fmt:formatNumber type="number" value="${hotel.lowestRate}"/>
 									 </h1>
 								</div>
 							</div>
@@ -410,21 +410,8 @@
 
 				</ul>
 
-			</div>
-
-
-
 
 		</div>
-		<div class="content-secondary">
-			<!-- 			<select> -->
-			<%-- 				<c:forEach items="${cities}" var="city"> --%>
-			<%-- 					<option value="${city.ctyFltcode}">${city.ctyName }</option> --%>
-			<%-- 				</c:forEach> --%>
-
-			<!-- 			</select> -->
-		</div>
-
 
 	</div>
 	<!-- /page -->

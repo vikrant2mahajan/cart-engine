@@ -47,7 +47,7 @@
 					</div>
 					<div class="ui-block-a" align="right">
 						<a href="#car" data-rel="dialog" data-transition="pop"
-							data-role="button" data-theme="b" class="car_logo"></a>
+							data-role="button" data-theme="b" class="car_logo1"></a>
 					</div>
 					<div class="ui-block-b" align="left">
 						<a href="#bus" data-rel="dialog" data-transition="pop"
