@@ -1,12 +1,18 @@
 package com.mmt.util;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import com.ibm.wsdl.extensions.PopulatedExtensionRegistry;
+import com.mmt.data.dao.api.CityMapperData;
+import com.mmt.data.models.CityMapper;
 import com.mmt.engine.core.utils.CFlightDiscountUtils;
 import com.mmt.engine.core.utils.Flight;
 import com.mmt.engine.core.utils.FlightCombination;
@@ -14,7 +20,12 @@ import com.mmt.engine.core.utils.Quote;
 
 public class ApplicationUtil implements ApplicationContextAware {
 
+	@Autowired
+	private static CityMapperData cityMapperData;
+	
 	private static ApplicationContext context = null;
+	
+	private static Map<String,CityMapper> cityMap = null;
 
 	public static Object getBean(String beanName) {
 		return context.getBean(beanName);
@@ -24,6 +35,23 @@ public class ApplicationUtil implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		context = applicationContext;
+	}
+	
+	public static Map<String,CityMapper> getCityMap(){
+		if(cityMap==null){
+			List<CityMapper> cityList = cityMapperData.getAllCities();
+			populateMap(cityList);
+		}
+		return cityMap;
+	}
+
+	private static void populateMap(List<CityMapper> cityList) {
+		cityMap = new HashMap<String, CityMapper>();
+		if(cityList!=null && cityList.size()>0){
+			for(CityMapper city:cityList){
+				cityMap.put(city.getCtyName(), city);
+			}
+		}
 	}
 
 	public static double getCombinationPrice(FlightCombination combination) {
@@ -50,6 +78,14 @@ public class ApplicationUtil implements ApplicationContextAware {
 		String min = (int) ((diff % (60 * 60 * 1000))/60000) + "m";
 		return hour + " " + min;
 
+	}
+
+	public CityMapperData getCityMapperData() {
+		return cityMapperData;
+	}
+
+	public void setCityMapperData(CityMapperData cityMapperData) {
+		this.cityMapperData = cityMapperData;
 	}
 
 }
