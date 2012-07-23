@@ -17,7 +17,7 @@
 	</bean>
 	<bean id="carMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="contextPath"
-			value="com.makemytrip.carrental.webservices" />
+			value="com.mmt.car.ws" />
 	</bean>
 
 	<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">
