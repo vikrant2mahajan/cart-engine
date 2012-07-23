@@ -7,6 +7,8 @@ public class RequestHolder {
 	private IRequest request;
 	
 	private ProductType type;
+	
+	private String ip;
 
 	public IRequest getRequest() {
 		return request;
@@ -22,6 +24,14 @@ public class RequestHolder {
 
 	public void setType(ProductType type) {
 		this.type = type;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 	
 }
