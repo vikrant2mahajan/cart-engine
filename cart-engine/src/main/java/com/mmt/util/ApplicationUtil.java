@@ -25,7 +25,9 @@ public class ApplicationUtil implements ApplicationContextAware {
 	
 	private static ApplicationContext context = null;
 	
-	private static Map<String,CityMapper> cityMap = null;
+	private static Map<String,CityMapper> cityMap;
+	
+	private static List<CityMapper> cityList;
 
 	public static Object getBean(String beanName) {
 		return context.getBean(beanName);
@@ -43,6 +45,13 @@ public class ApplicationUtil implements ApplicationContextAware {
 			populateMap(cityList);
 		}
 		return cityMap;
+	}
+	
+	public static List<CityMapper> getCityList(){
+		if(cityList==null){
+			cityList = cityMapperData.getAllCities();
+		}
+		return cityList;
 	}
 
 	private static void populateMap(List<CityMapper> cityList) {
