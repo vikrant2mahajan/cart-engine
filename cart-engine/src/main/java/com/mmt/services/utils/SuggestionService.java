@@ -279,7 +279,7 @@ public class SuggestionService implements ISuggestionService{
 		Collections.sort(response.getHotels(), new HotelPriceComparator());
 		suggestion.setPrice(response.getHotels().get(0).getLowestRate());
 		suggestion.setImgUrl(response.getHotels().get(0).getUrlPic());
-		suggestion.setDescription(response.getHotels().get(0).getHotelName());
+		suggestion.setName(response.getHotels().get(0).getHotelName());
 		suggestion.setDescription(desc);
 		suggestionList.add(suggestion);
 	}
