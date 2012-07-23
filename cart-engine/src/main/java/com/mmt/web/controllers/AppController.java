@@ -24,6 +24,7 @@ import com.mmt.services.product.cars.ServiceType;
 import com.mmt.services.product.flights.FlightRQ;
 import com.mmt.services.product.hotels.HotelRQ;
 import com.mmt.services.product.hotels.RoomRQ;
+import com.mmt.util.ApplicationUtil;
 import com.mmt.util.ProductType;
 
 @Controller
@@ -31,6 +32,9 @@ public class AppController {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private ApplicationUtil util;
 
 	public RestTemplate getRestTemplate() {
 		return restTemplate;
@@ -114,7 +118,8 @@ public class AppController {
 	@RequestMapping("home.htm")
 	public ModelAndView getHomeUI() {
 		ModelAndView modelAndView = new ModelAndView("home");
-		List cities = cityMapperData.getAllCities();
+//		List cities = cityMapperData.getAllCities();
+		List cities = util.getCityList();
 		modelAndView.addObject("cities", cities);
 		return modelAndView;
 	}
@@ -221,6 +226,14 @@ public class AppController {
 		}
 
 		return modelAndView;
+	}
+
+	public ApplicationUtil getUtil() {
+		return util;
+	}
+
+	public void setUtil(ApplicationUtil util) {
+		this.util = util;
 	}
 
 }
