@@ -23,6 +23,21 @@ var cart = {};
 
 				});
 
+		    $("body").on(
+				"click",
+				"li[data-type='CAR'] a",
+				function() {
+					$("#requestData").val(
+							JSON.stringify(results['Car'][$(this).parents("li")
+									.attr("id")]));
+					$("#listingForm").submit();
+				});
+
+		
+		
+		
+		
+		
 		$(".cart_panel[data-position='fixed']").fixedtoolbar('hide');
 
 		$("body").on("click", "#planTravel", function() {
@@ -30,7 +45,8 @@ var cart = {};
 				addBusToCart(true);
 			if (currentProduct.type == 'FLIGHT')
 				addFlightToCart(true);
-
+			if (currentProduct.type == 'CAR')
+				addCarToCart(true);
 		});
 		$("body").on("click", ".cart_delete", function() {
 			var item = $(this).parents(".cart_item");
@@ -158,3 +174,65 @@ var addFlightToCart = function(animate) {
 
 	}
 };
+
+
+var addCarToCart = function(animate) {
+
+	if (cart['CAR'] == undefined) {
+		cart['CAR'] = currentProduct;
+		if (cart['FARE'] == undefined) {
+			if (currentProduct.fare != null)
+				cart['FARE'] = currentProduct.fare;
+			else
+				cart['FARE'] = currentProduct.fare;
+
+		} else {
+			var fare = 0;
+			if (currentProduct.fare != null)
+				fare = currentProduct.fare;
+			else
+				fare = currentProduct.fare;
+			cart['FARE'] += fare;
+		}
+		$(".cart_panel[data-position='fixed']").fixedtoolbar('show');
+
+		if (animate)
+			$("#planTravel").effect("transfer", {
+				to : $(".cart")
+			}, 1000);
+
+		var content = '<div	class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item " style="display:none">	<span class="cart_delete" title="Remove"></span>	<div align="center"><img alt="Car" src='+currentProduct.logo+' width="50%" height="30px;"></div><p class="heavy">'
+				+ currentProduct.name
+				+ '</p>	<p>'
+				+ currentProduct.fromCity
+				+ ' to '
+				+ currentProduct.toCity
+				+ '</p></div>';
+		$(".cart_panel[data-position='fixed'] .ui-grid-e").first().after(
+				content);
+
+		if (animate)
+			$(".cart_item:not(:visible)").show("drop", 1000);
+
+		var params = JSON.stringify(currentProduct);
+		$.ajax({
+			url : 'addItemToCart.htm',
+			type : "POST",
+			data : {
+				item : params,
+				type : currentProduct.type,
+				fare : cart['FARE']
+
+			},
+			success : function(data) {
+
+			}
+		});
+	} else {
+		$(".cart_panel[data-position='fixed']").fixedtoolbar('show');
+		alert("You already have a car in your cart !");
+
+	}
+};
+
+
