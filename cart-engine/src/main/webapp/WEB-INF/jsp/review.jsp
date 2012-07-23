@@ -68,10 +68,15 @@
 
 
 
-
-
-
-
+				<c:if test="${not empty cart and not empty cart.products['CAR']}">
+				<script>
+				cart['CAR']=${cart.products['CAR']};				
+				</script>
+					<div style="" class="ui-block-b ui-btn ui-shadow  ui-btn-inline ui-btn-up-c ui-btn-corner-all cart_item ui-btn-up-undefined">
+						<span title="Remove" class="cart_delete"></span>	
+						<div align="center"><img width="50%" height="30px;" src=${cart.products['CARM'].logo} alt="FLIGHT">
+						</div><p class="heavy">${cart.products['CARM'].name}</p>	<p>${cart.products['CARM'].fromCity} to ${cart.products['CARM'].toCity}</p></div>
+				</c:if>
 				<div class="ui-block-a fare"
 					<c:if test="${empty cart}">style="display: none;"</c:if>>
 					<div class="ui-grid-a ">
@@ -89,7 +94,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- /footer -->
+		
 
 
 
@@ -151,7 +156,33 @@
 
 			</c:if>
 
+	
+			<c:if test="${mapdata.type=='CAR'}">
+				<div class="ui-grid-d ${mapdata.type }_product">
+					<c:if test="${mapdata.type=='CAR'}">
+						<div align="center" class="ui-block-a">
+							<strong>${mapdata.name}</strong><br /><br /><br />
+							<img width="30%" height="30%" alt="car"
+								src="${mapdata.logo}"> 
+						</div>
+					</c:if>
 
+					<div class="ui-block-b">
+						<br /> <br /> ${mapdata.fromCity} - ${mapdata.toCity}
+					</div>
+					
+					<div class="ui-block-c">
+						<br /> <br /> Morning
+					</div>
+					
+					<div class="ui-block-d">
+						<br /> <br /> <strong class="big">Rs <fmt:formatNumber
+								type="number" value="${mapdata.fare}" /></strong>
+					</div>
+				</div>
+
+			</c:if>
+			
 
 			<div class="ui-grid-a panel">
 				<div class="ui-block-a" align="left">
