@@ -53,7 +53,7 @@
 						<script>
 							results["Flight"] = {};
 						</script>
-						<form action="selectBus.htm" method="get" id="busForm">
+						<form action="selectBus.htm" method="get" id="listingForm">
 							<input type="hidden" id="requestData" name="data" /> <input
 						type="hidden" name="type" value="${result.type}" />
 						</form>
@@ -73,6 +73,9 @@
 										Flights</span>
 
 
+																					
+
+
 								</li>
 							</c:if>
 
@@ -82,19 +85,23 @@
 												.getCombinationPrice((FlightCombination) request
 														.getAttribute("flight")));
 							%>
-							
+							<c:if test="${fn:length(flight.flightSegmentList)==1}">
 							<script>
+							
 							var flight={};
 							flight['fare']=${fare};
 							flight['fromCity']='${cityMapByCode[flight.flightSegmentList[0].origin].ctyName}';
 							flight['toCity']='${cityMapByCode[flight.flightSegmentList[0].destination].ctyName}';
+							
 							</script>
+							</c:if>
 							<li data-type='FLIGHT' id="${flight.flightSegmentList[0].flightNumber}"><a href="#selectFlight"> <c:forEach var="leg"
 										varStatus="statleg" items="${flight.flightSegmentList}">
 																	
 										<c:if test="${leg.carrierCode=='JK' or leg.carrierCode=='JL' }">								
 											<c:set target="${leg}" property="carrierCode" value="9W"></c:set>							
 										</c:if>
+										<c:if test="${fn:length(flight.flightSegmentList)==1}">
 										<script>			
 										flight['type']='FLIGHT';
 										flight['airlineName']='${leg.airlineName}';
@@ -102,6 +109,7 @@
 										flight['flightNumber']='${leg.flightNumber}';
 										
 										</script>
+										</c:if>
 							
 										<fmt:parseDate value="${leg.departure}" var="dep"
 											pattern="yyyy-MM-dd'T'HH:mm:ss" />
@@ -128,12 +136,14 @@
 												</p>
 												<p>${cityMapByCode[leg.origin].ctyName}</p>
 											</div>
+											<c:if test="${fn:length(flight.flightSegmentList)==1}">
 											<script type="text/javascript">
 											flight['departure']='<fmt:formatDate pattern="H:mm a" value="${dep}" />';
 												flight['arrival']='<fmt:formatDate pattern="H:mm a" value="${arv}" />'
 												results.Flight['${leg.flightNumber}']=flight;
 											
 											</script>
+											 </c:if>
 											<div class="ui-block-c">
 												</br>
 												<p>
@@ -206,7 +216,7 @@
 						<script>
 							results["BUS"] = {};
 						</script>
-						<form action="selectBus.htm" method="get" id="busForm">
+						<form action="selectBus.htm" method="get" id="listingForm">
 							<input type="hidden" id="requestData" name="data" /> <input
 								type="hidden" name="type" value="${result.type}" />
 
@@ -503,6 +513,10 @@
 					</li>
 					</c:forEach>
 					</c:if>
+
+
+
+
 				</ul>
 			</div>
 			<!-- Content -->
@@ -510,6 +524,7 @@
 			     <h1><c:if test="${result.type=='FLIGHT'}">Flight</c:if><c:if test="${result.type=='BUS'}">Bus</c:if><c:if test="${result.type=='CAR'}">Car</c:if><c:if test="${result.type=='HOTEL'}">Hotels</c:if></h1>
 		
 		 </div>
+
 
 		</div>
 
