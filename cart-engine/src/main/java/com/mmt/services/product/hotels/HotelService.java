@@ -36,11 +36,11 @@ public class HotelService implements IProductService{
 	public IResponse search(IRequest req) {
 		MMTHotelSearchRequest hotelRequest = createHotelSearchRequest(req);
 		ResponseEntity<MMTHotelSearchResponse> response = restTemplate.postForEntity(htlUrl, hotelRequest, MMTHotelSearchResponse.class);
-		return populateHotelResponse(response.getBody());
+		return populateHotelResponse(response.getBody(), req);
 	}
 
-	private IResponse populateHotelResponse(MMTHotelSearchResponse response) {
-		HotelRSParser parser = new HotelRSParser(response); 
+	private IResponse populateHotelResponse(MMTHotelSearchResponse response, IRequest req) {
+		HotelRSParser parser = new HotelRSParser(response, req); 
 		return parser.parse();
 	}
 
