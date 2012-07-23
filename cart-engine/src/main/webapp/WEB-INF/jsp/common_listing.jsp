@@ -36,6 +36,11 @@
 		<script type="text/javascript">
 			var results = {};
 		</script>
+		<div data-role="header" data-position="fixed">
+			     <h1><c:if test="${result.type=='FLIGHT'}">Flight Listing</c:if><c:if test="${result.type=='BUS'}">Bus Listing</c:if><c:if test="${result.type=='CAR'}">Car Listing</c:if><c:if test="${result.type=='HOTEL'}">Hotels Listing</c:if></h1>
+		 <a href="home.htm"  data-role="button" data-inline="true"
+				data-icon="home">Home</a>
+		 </div>
 		<div data-role="content">
 		</br>
 				<ul data-role="listview" data-split-icon="arrow-r"
@@ -380,6 +385,13 @@
 						<c:forEach var="car"
 							items="${result.response.response}"
 							varStatus="status">
+							<c:if test="${status.index==0 }">
+							<li data-role="list-divider">
+								${cityMapByCode[result.response.fromCity].ctyName}-${cityMapByCode[result.response.toCity].ctyName}-
+								<span class="ui-li-count">${fn:length(result.response.response)}
+									Cars </span>
+							</li>
+						</c:if>
 							<li><a href="index.html">
 							<div class="ui-grid-c">
 							<div class="ui-block-a">
@@ -424,6 +436,13 @@
 						<c:forEach var="hotel"
 							items="${result.response.hotels}"
 							varStatus="status">
+									<c:if test="${status.index==0 }">
+							   <li data-role="list-divider" >
+								  Hotels in ${cityMapByCode[result.response.cityName].ctyName}
+								   <span class="ui-li-count">${fn:length(result.response.hotels)}
+									Hotels </span>
+							   </li>
+						    </c:if>
 							<li><a href="index.html">
 							<div class="ui-grid-c">
 								<div class="ui-block-a">
@@ -484,12 +503,13 @@
 					</li>
 					</c:forEach>
 					</c:if>
-
-
-
-
 				</ul>
-
+			</div>
+			<!-- Content -->
+		<div data-role="footer" data-position="fixed">
+			     <h1><c:if test="${result.type=='FLIGHT'}">Flight</c:if><c:if test="${result.type=='BUS'}">Bus</c:if><c:if test="${result.type=='CAR'}">Car</c:if><c:if test="${result.type=='HOTEL'}">Hotels</c:if></h1>
+		
+		 </div>
 
 		</div>
 
