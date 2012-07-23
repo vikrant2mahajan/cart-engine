@@ -11,8 +11,12 @@
 <link rel="stylesheet"
 	href="http://dev.jtsage.com/cdn/datebox/latest/jquery.mobile.datebox.min.css" />
 <link rel="stylesheet" href="css/chosen.css" />
-
+<link rel="stylesheet" href="css/customMessages.css" />
+<link rel="stylesheet" href="css/template.css" />
+<link rel="stylesheet" href="css/validationEngine.jquery.css" />
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.validationEngine.js"></script>
+<script src="js/jquery.validationEngine-en.js"></script>
 <script src="js/chosen.jquery.min.js"></script>
 <script
 	src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
@@ -25,7 +29,11 @@
 </head>
 <script>
 	$(document).ready(function() {
-		$(".chosenTextFields").chosen();
+		 $(".chosenTextFields").chosen();
+		 $("#flightForm").validationEngine('attach'); 
+		 $("#hotelsForm").validationEngine('attach');
+		 $("#carForm").validationEngine('attach');
+		 $("#busForm").validationEngine('attach');
 	});
 </script>
 <body>
@@ -76,7 +84,7 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content">
-			<form action="flightsReq.htm" method="get">
+			<form action="flightsReq.htm" method="get" id="flightForm">
 				<!-- <fieldset data-role="controlgroup" data-mini="true"
 					data-type="horizontal">
 					<input type="radio" name="tripType" id="oneWay" value="O"
@@ -125,14 +133,8 @@
 				<div>
 						<label for="fDepDate">Departure Date</label> <input
 							name="fDepDate" id="fDepDate" type="date" data-role="datebox"
-							data-options='{"mode":"calbox"}'>
+							data-options='{"mode":"calbox"}' class="validate[required]">
 					</div>
-
-					<!-- <div>
-					<label for="fRetDate">Return Date</label> <input name="fRetDate"
-						id="fRetDate" type="date" data-role="datebox"
-						data-options='{"mode":"calbox"}'>
-				</div> -->
 				<div style="height: 4px;">
 					<p>&nbsp;</p>
 				</div>
@@ -140,19 +142,19 @@
 						<div class="ui-block-a">
 							<label for="fadultCount" class="ui-input-text">Adults:</label> <input
 								type="number" name="fadultCount" id="fadultCount" value=""
-								class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+								class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset validate[required,custom[integer],min[0]] ">
 						</div>
 
 						<div class="ui-block-b">
 							<label for="fchildCount" class="ui-input-text">Children</label> <input
 								type="number" name="fchildCount" id="fchildCount" value=""
-								class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+								class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset validate[custom[integer],min[0]]">
 						</div>
 
 						<div class="ui-block-c">
 							<label for="finfantCount" class="ui-input-text">Infants</label> <input
 								type="number" name="finfantCount" id="finfantCount" value=""
-								class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+								class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset validate[custom[integer],min[0]]">
 						</div>
 					</div>
 
@@ -187,7 +189,7 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content">
-			<form action="hotelReq.htm" method="get">
+			<form action="hotelReq.htm" method="get" id="hotelsForm">
 
 				<div>
 					<div>
@@ -211,7 +213,7 @@
 				<div>
 					<label for="hCheckInDate">Check In Date</label> <input
 						name="hCheckInDate" id="hCheckInDate" type="date"
-						data-role="datebox" data-options='{"mode":"calbox"}'>
+						data-role="datebox" data-options='{"mode":"calbox"}' class="validate[required]">
 				</div>
 				
 				<div style="height: 4px;">
@@ -221,7 +223,7 @@
 				<div>
 					<label for="hCheckOutDate">Check Out Date</label> <input
 						name="hCheckOutDate" id="hCheckOutDate" type="date"
-						data-role="datebox" data-options='{"mode":"calbox"}'>
+						data-role="datebox" data-options='{"mode":"calbox"}' class="validate[required]">
 				</div>
 				
 				 <div style="height: 4px;">
@@ -230,22 +232,16 @@
 				
 				<div class="ui-grid-b">
 
-					<div class="ui-block-a">
-						<label for="rooms" class="ui-input-text">No Of rooms:</label> <input
-							type="number" name="rooms" id="rooms" value=""
-							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
-					</div>
-
 					<div class="ui-block-b">
 						<label for="hadultcount" class="ui-input-text">Adults:</label> <input
 							type="number" name="hadultcount" id="hadultcount" value=""
-							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset validate[required,custom[integer],min[0]]">
 					</div>
 
 					<div class="ui-block-c">
 						<label for="hchildCount" class="ui-input-text">Children:</label> <input
 							type="number" name="hchildCount" id="childCount" value=""
-							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset">
+							class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset validate[custom[integer],min[0]]">
 					</div>
 				</div>
 				<button type="submit" data-theme="b" name="submitHotel"
@@ -269,7 +265,7 @@
 		<!-- /header -->
 
 		<div data-role="content">
-					<form action="busReq.htm" method="get">
+					<form action="busReq.htm" method="get" id="busForm">
 						<div>
 	                          <div>
 							         <label for="bDepCity">Origin</label>
@@ -309,7 +305,7 @@
 
 				<label for="bDepDate">Departure Date</label> <input
 									name="bDepDate" id="bDepDate" type="date" data-role="datebox"
-									data-options='{"mode":"calbox"}'>
+									data-options='{"mode":"calbox"}' class="validate[required]">
 							<div>
 							<button type="submit" data-theme="b" name="submitBus"
 								value="submit-value-bus" data-inline="true" data-icon="search">Search
@@ -333,7 +329,7 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content">
-			<form action="carReq.htm" method="get">
+			<form action="carReq.htm" method="get" id="carForm">
 				<div>
 					<div>
 						<label for="cDepCity">Origin</label>
@@ -371,7 +367,7 @@
 				<div>
 					<label for="cDepDate">Departure Date</label> <input name="cDepDate"
 						id="cDepDate" type="date" data-role="datebox"
-						data-options='{"mode":"calbox"}' data-mini="true">
+						data-options='{"mode":"calbox"}' data-mini="true" class="validate[required]">
 				</div>
 				<button type="submit" data-theme="b" name="submitCar"
 					value="submit-value-Car" data-inline="true" data-icon="search">Search
