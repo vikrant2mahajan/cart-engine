@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,6 @@ import com.mmt.services.product.cars.CarRQ;
 import com.mmt.services.product.cars.ServiceType;
 import com.mmt.services.product.flights.FlightRQ;
 import com.mmt.services.product.flights.FlightRS;
-import com.mmt.services.product.hotels.Hotel;
 import com.mmt.services.product.hotels.HotelRQ;
 import com.mmt.services.product.hotels.HotelRS;
 import com.mmt.services.product.hotels.RoomRQ;
@@ -180,7 +178,7 @@ public class AppController {
 		holder.setRequest(request);
 		holder.setType(ProductType.FLIGHT);
 		holder.setIp(geoLoc);
-		//suggestionService.getSuggestions(holder);
+		// suggestionService.getSuggestions(holder);
 		ResponseHolder holder2 = searchService.search(holder);
 		Collections.sort(((FlightRS) (holder2.getResponse())).getResponse()
 				.getResults(), new FlightPriceComparator());
@@ -213,12 +211,12 @@ public class AppController {
 			if (formDetails.getcDepCity().equalsIgnoreCase(
 					formDetails.getcRetCity())) {
 				request.setServiceType(ServiceType.LOCAL_USAGE);
-				request.setDestination(null);
+				request.setOrigin(null);
 			}
 			holder.setRequest(request);
 			holder.setType(ProductType.CAR);
 			holder.setIp(geoLoc);
-//			suggestionService.getSuggestions(holder);
+			// suggestionService.getSuggestions(holder);
 			ResponseHolder holder2 = searchService.search(holder);
 			// Collections.sort(((CarRS)(holder2.getResponse())).getResponse(),new
 			// CarPriceComparator());
@@ -314,7 +312,6 @@ public class AppController {
 			holder.setIp(geoLoc);
 			// suggestionService.getSuggestions(holder);
 			ResponseHolder holder2 = searchService.search(holder);
-			prune(holder2);
 			Collections.sort(((HotelRS) (holder2.getResponse())).getHotels(),
 					new HotelPriceComparator());
 			modelAndView.addObject("result", holder2);
@@ -323,24 +320,6 @@ public class AppController {
 		}
 
 		return modelAndView;
-	}
-
-	private void prune(ResponseHolder holder) {
-		HotelRS hotelRS = (HotelRS) holder.getResponse();
-		if (hotelRS != null && hotelRS.getHotels().size() > 0) {
-
-			Iterator<Hotel> iterator = hotelRS.getHotels().iterator();
-
-			while (iterator.hasNext()) {
-				Hotel hotel = iterator.next();
-				if (hotel.getStarRating().equals("1")
-						|| hotel.getStarRating().equals("2")) {
-					iterator.remove();
-				}
-
-			}
-
-		}
 	}
 
 	@RequestMapping("addItemToCart.htm")
@@ -403,6 +382,7 @@ public class AppController {
 	ProductCart removeProduct(HttpSession session,
 			@RequestParam(value = "type", required = true) String type) {
 		((ProductCart) session.getAttribute("cart")).getProducts().remove(type);
+		((ProductCart) session.getAttribute("cart")).getProducts().remove(type+"M");
 		return ((ProductCart) session.getAttribute("cart"));
 
 	}

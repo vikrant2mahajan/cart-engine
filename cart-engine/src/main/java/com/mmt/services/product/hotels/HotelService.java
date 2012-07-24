@@ -1,5 +1,7 @@
 package com.mmt.services.product.hotels;
 
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.RoomS
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.StayDateRanges;
 import com.mmt.hotel.entity.MMTHotelSearchRequest.SearchCriteria.Criterion.StayDateRanges.StayDateRange;
 import com.mmt.hotel.entity.MMTHotelSearchResponse;
+import com.mmt.search.ResponseHolder;
 import com.mmt.services.product.IProductService;
 import com.mmt.services.product.IRequest;
 import com.mmt.services.product.IResponse;
@@ -41,9 +44,29 @@ public class HotelService implements IProductService {
 	private IResponse populateHotelResponse(MMTHotelSearchResponse response,
 			IRequest req) {
 		HotelRSParser parser = new HotelRSParser(response, req);
-		return parser.parse();
+		HotelRS hotelRS= parser.parse();
+		prune(hotelRS);
+		return hotelRS;
 	}
 
+	
+	private void prune(HotelRS hotelRS) {
+		if (hotelRS != null && hotelRS.getHotels().size() > 0) {
+			Iterator<Hotel> iterator = hotelRS.getHotels().iterator();
+
+			while (iterator.hasNext()) {
+				Hotel hotel = iterator.next();
+				if (hotel.getStarRating().equals("1")
+						|| hotel.getStarRating().equals("2")) {
+					iterator.remove();
+				}
+
+			}
+
+		}
+	}
+
+	
 	private MMTHotelSearchRequest createHotelSearchRequest(IRequest req) {
 		HotelRQ hotelReq = (HotelRQ) req;
 		MMTHotelSearchRequest request = new MMTHotelSearchRequest();

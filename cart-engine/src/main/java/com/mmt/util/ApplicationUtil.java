@@ -142,5 +142,6 @@ public class ApplicationUtil implements ApplicationContextAware, ServletContextA
 	public void setServletContext(ServletContext servletContext) {
 		servletContext.setAttribute("cityMapByCode", getCityMapByCode());
 		servletContext.setAttribute("cityMapByName", getCityMapByName());
+		servletContext.setAttribute("cityMapByBusCode", getCityMapByBusCode());
 	}
 }
