@@ -96,7 +96,7 @@
 							
 							</script>
 							</c:if>
-							<li data-type='FLIGHT' id="${flight.flightSegmentList[0].flightNumber}"><a href="#selectFlight"> <c:forEach var="leg"
+							<li data-type='FLIGHT' id="${flight.flightSegmentList[0].carrierCode}${flight.flightSegmentList[0].flightNumber}"><a href="#selectFlight"> <c:forEach var="leg"
 										varStatus="statleg" items="${flight.flightSegmentList}">
 																	
 										<c:if test="${leg.carrierCode=='JK' or leg.carrierCode=='JL' }">								
@@ -142,8 +142,7 @@
 												flight['departure']='<fmt:formatDate pattern="H:mm a" value="${dep}" />';
 												flight['arrival']='<fmt:formatDate pattern="H:mm a" value="${arv}" />'
 												flight['departureDate']='<fmt:formatDate pattern="yyyy-MM-dd" value="${dep}" />';
-
-												results.Flight['${leg.flightNumber}']=flight;
+												results.Flight['${leg.carrierCode}'+'${leg.flightNumber}']=flight;
 												
 											</script>
 											 </c:if>
