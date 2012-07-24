@@ -368,7 +368,6 @@
 }
 
 }
-
 .audio {
 	background: url("images/audio.png") no-repeat scroll 0 0 transparent;
 	float: left;
@@ -419,7 +418,7 @@
 
 .amenities {
 	background: url("images/amenities.png") no-repeat scroll 0 0 transparent;
-	margin-top: 7px; 
+	margin-top: 7px;
 }
 
 .am_active_1 {
@@ -451,7 +450,7 @@
 }
 
 .am_active_5 {
-	height: 30px; 
+	height: 30px;
 	width: 30px;
 	background-position: -120px 0px;
 	float: left;
@@ -503,4 +502,31 @@
 	height: 20px;
 	width: 20px;
 	margin-top: 7px;
+}
+
+.add {
+	background: url("images/add.png") no-repeat scroll 0 0 transparent;
+	height: 24px;
+	width: 24px;
+	float: left;
+}
+
+.bg {
+	border: 2px solid #BBBBBB;
+	margin: 4px;
+}
+
+.big2 {
+	font-size: 20px !important;
+	margin: 0;
+	padding: 0 !important;
+}
+
+.f16 {
+	font-size: 16px;
+	margin-left: 28px;
+}
+.line{
+	border: 1px dotted gray;
+	width: 78%;
 }

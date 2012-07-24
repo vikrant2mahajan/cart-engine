@@ -48,7 +48,56 @@ var cart = {};
 					$("#listingForm").submit();
 				});
 
-		
+		    
+		    //
+		    
+		    $("body").on("click",".completeCheckOut",function(){
+		    	$("#finalReview").submit();
+		    	
+		    });
+		    
+		    
+		   $("body").on("click","#checkOut",function(){
+			   
+			   var params = JSON.stringify(currentProduct);
+			   var tempFare=0;
+			   if(cart[currentProduct.type]==undefined){
+			   if(currentProduct.type=='BUS'){
+					if (currentProduct.seaterFare != null)
+						tempFare = currentProduct.seaterFare;
+					else
+						tempFare = currentProduct.sleeperFare;
+						currentProduct.fare=tempFare;
+				}
+			   
+			   var fare=currentProduct.fare;
+			   
+			   if(cart['FARE']!=undefined)
+				   fare+=currentProduct.fare;
+			   
+			   
+				$.ajax({
+					url : 'addItemToCart.htm',
+					type : "POST",
+					data : {
+						item : params,
+						type : currentProduct.type,
+						fare :fare
+					},
+					success : function(data) {
+						
+						$("#finalReview").submit();
+						
+						
+					}
+				});
+			   }else{
+				   $("#finalReview").submit();
+			   }
+			   
+		   });
+		    
+		    
 		
 		
 		
@@ -62,9 +111,13 @@ var cart = {};
 				addFlightToCart(true);
 			if(currentProduct.type=='HOTEL')
 				addHotelToCart(true);
-			
 			if (currentProduct.type == 'CAR')
 				addCarToCart(true);
+			setTimeout(function(){
+				getSuggestions();	
+			}, 2000);
+						
+			
 		});
 		$("body").on("click", ".cart_delete", function() {
 			var item = $(this).parents(".cart_item");
@@ -78,7 +131,22 @@ var cart = {};
 						type : prodType
 					},
 					success : function(data) {
-						cart['FARE']-=cart[prodType].fare;
+						var fare=0;
+						if(prodType=='BUS'){
+							if (cart[prodType].seaterFare != null)
+								fare = cart[prodType].seaterFare;
+							else
+								fare = cart[prodType].sleeperFare;;
+								cart[prodType].fare=fare;
+						}
+						
+						var finalFare=cart[prodType].fare;
+						finalFare=parseInt(cart['FARE'])-parseInt(finalFare);
+						if(finalFare=='NAN')
+							{
+							finalFare=0;
+							}
+						cart['FARE']=finalFare;
 						cart[prodType]=undefined;
 
 						$(".fare .big span:last").text(cart['FARE']);
@@ -97,10 +165,10 @@ var addBusToCart = function(animate) {
 	if (cart['BUS'] == undefined) {
 		cart['BUS'] = currentProduct;
 		if (cart['FARE'] == undefined) {
-			if (currentProduct.sleeperFare != null)
-				cart['FARE'] = currentProduct.sleeperFare;
-			else
+			if (currentProduct.seaterFare != null)
 				cart['FARE'] = currentProduct.seaterFare;
+			else
+				cart['FARE'] = currentProduct.sleeperFare;
 
 		} else {
 			var fare = 0;
@@ -315,16 +383,43 @@ var addCarToCart = function(animate) {
 				item : params,
 				type : currentProduct.type,
 				fare : cart['FARE']
-
 			},
 			success : function(data) {
-
 			}
 		});
 	} else {
 		$(".cart_panel[data-position='fixed']").fixedtoolbar('show');
 		alert("You already have a car in your cart !");
-
 	}
 };
 
+var getSuggestions=function(){
+	var data=currentProduct;
+	var data={
+		productType:currentProduct.type,
+		origin:currentProduct.fromCityCode,
+		destination:currentProduct.toCityCode,
+		depDate:currentProduct.departureDate,
+		checkinDate:currentProduct.checkinDate,
+		checkoutDate:currentProduct.checkoutDate,
+		geoLoc:'DEL'
+		
+	};
+	
+	$("#suggestionFormData").val(JSON.stringify(data));
+	$("#suggestionForm").submit();
+//	$.ajax({
+//		url : 'getSuggestions.htm',
+//		type : "POST",
+//		data : data,
+//		success : function(data) {
+			
+			
+//			$(".suggestions_content").html(data);
+//			$(".suggestions").page();
+//			$.mobile.changePage( $(".suggestions"));
+			
+//		}
+//	s});
+	
+};

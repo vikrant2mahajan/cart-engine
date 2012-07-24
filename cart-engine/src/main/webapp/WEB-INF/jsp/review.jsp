@@ -25,6 +25,19 @@
 <body>
 
 	<div data-role="page" class="type-interior">
+	
+		<form id="suggestionForm" action="getSuggestions.htm" method="get">
+			<input type="hidden" name="data" id="suggestionFormData"/>
+			
+		</form>
+
+		<form id="finalReview" action="getFinalReview.htm" method="get">
+			<input type="hidden" name="data" id="finalData"/>
+			
+		</form>
+	
+	
+	
 		<script type="text/javascript">
 			var currentProduct = ${data};
 		</script>
@@ -95,7 +108,8 @@
 
 
 				<div class="ui-block-a fare"
-					<c:if test="${empty cart}">style="display: none;"</c:if>>
+				
+					<c:if test="${empty cart or(empty cart.products['CAR'] and empty cart.products['BUS'] and empty cart.products['FLIGHT'] and empty cart.products['HOTEL'])}">style="display: none;"</c:if>>
 					<div class="ui-grid-a ">
 						<div class="ui-block-a" align="right">
 							<strong>Grand Total:</strong>
@@ -104,7 +118,7 @@
 							</div>
 						</div>
 						<div class="ui-block-b" align="right">
-							<a href="index.html" data-role="button" data-icon="arrow-r"
+							<a href="#cart Check Out" data-role="button" data-icon="arrow-r" class="completeCheckOut"
 								data-theme="e" data-inline="true">Cart Check Out</a>
 						</div>
 					</div>
@@ -124,7 +138,7 @@
 				<c:if test="${mapdata.type=='HOTEL'}">
 					<div class="ui-block-c">Facilites</div>
 				</c:if>
-				<c:if test="${not mapdata.type=='HOTEL'}">
+				<c:if test="${ mapdata.type=='CAR' or not mapdata.type=='BUS' or not mapdata.type=='FLIGHT'}">
 					<div class="ui-block-c">Time</div>
 				</c:if>
 				<div class="ui-block-d">Fare</div>
@@ -171,8 +185,17 @@
 						<br /> <br /> ${mapdata.departureTime}
 					</div>
 					<div class="ui-block-d">
-						<br /> <br /> <strong class="big">Rs <fmt:formatNumber
-								type="number" value="${mapdata.sleeperFare}" /></strong>
+					
+								<c:if test="${not empty mapdata.seaterFare}">								
+								 	<c:set var="busFare" value="${mapdata.seaterFare}"></c:set>
+								</c:if>
+								<c:if test="${not empty mapdata.sleeperFare and empty mapdata.seaterFare }">
+								 	<c:set var="busFare" value="${mapdata.sleeperFare}"></c:set>
+								</c:if>
+					
+					
+						<br /> <br /> <strong class="big"><span class="WebRupee">Rs</span> <fmt:formatNumber
+								type="number" value="${busFare}" /></strong>
 					</div>
 				</div>
 
@@ -198,7 +221,7 @@
 					</div>
 					
 					<div class="ui-block-d">
-						<br /> <br /> <strong class="big">Rs <fmt:formatNumber
+						<br /> <br /> <strong class="big"><span class="WebRupee">Rs</span> <fmt:formatNumber
 								type="number" value="${mapdata.fare}" /></strong>
 					</div>
 				</div>
@@ -290,13 +313,13 @@
 
 			<div class="ui-grid-a panel">
 				<div class="ui-block-a" align="left">
-					<a href="#plan" data-role="button" data-icon="trip" id="planTravel"
+					<a href="#plan" data-role="button" data-icon="trip" id="planTravel"   data-rel="dialog"
 						data-inline="true">Plan My Trip</a>
 
 				</div>
 
 				<div class="ui-block-b" align="right">
-					<a href="index.html" data-role="button" data-icon="arrow-r"
+					<a href="#checkout" data-role="button" data-icon="arrow-r" id="checkOut"
 						data-theme="e" data-inline="true">Check Out</a>
 
 				</div>
@@ -311,5 +334,23 @@
 
 
 	</div>
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </body>
 </html>

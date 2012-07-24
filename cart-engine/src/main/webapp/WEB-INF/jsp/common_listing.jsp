@@ -91,6 +91,8 @@
 							flight['fare']=${fare};
 							flight['fromCity']='${cityMapByCode[flight.flightSegmentList[0].origin].ctyName}';
 							flight['toCity']='${cityMapByCode[flight.flightSegmentList[0].destination].ctyName}';
+							flight['fromCityCode']='${flight.flightSegmentList[0].origin}';
+							flight['toCityCode']='${flight.flightSegmentList[0].destination}';
 							
 							</script>
 							</c:if>
@@ -137,9 +139,12 @@
 											</div>
 											<c:if test="${fn:length(flight.flightSegmentList)==1}">
 											<script type="text/javascript">
-											flight['departure']='<fmt:formatDate pattern="H:mm a" value="${dep}" />';
+												flight['departure']='<fmt:formatDate pattern="H:mm a" value="${dep}" />';
 												flight['arrival']='<fmt:formatDate pattern="H:mm a" value="${arv}" />'
+												flight['departureDate']='<fmt:formatDate pattern="yyyy-MM-dd" value="${dep}" />';
+
 												results.Flight['${leg.flightNumber}']=flight;
+												
 											</script>
 											 </c:if>
 											<div class="ui-block-c">
@@ -230,9 +235,9 @@
 							<script>
 								var bus = {};
 								bus.type="BUS";
-								bus.groupName = '${busitem.groupName}';
-								bus.fromCity = '${busitem.fromCity}';
-								bus.toCity = '${busitem.toCity}';
+								bus.groupName = '${fn:split(busitem.groupName,"(")[0]}';
+								bus.fromCity = '${fn:split(busitem.fromCity,"(")[0]}';
+								bus.toCity = '${fn:split(busitem.toCity,"(")[0]}';
 								bus.seatType = '${busitem.seatType }';
 								try {
 									bus.sleeperFare = parseInt('${busitem.sleeperFare}');
@@ -274,6 +279,8 @@
 										<script>
 											bus.departureTime = '<fmt:formatDate pattern="hh:mm a"
 																value="${dep}" />';
+																
+											bus['departureDate']='<fmt:formatDate pattern="MM-dd-yyyy" value="${dep}" />';					
 											results.BUS['${busitem.tripId}'] = bus;
 										</script>
 
@@ -464,10 +471,13 @@
 					
 					car['fare']=parseInt('${car.bookingPriceToDisplay}');
 					car['fromCity']='${cityMapByCode[result.response.fromCity].ctyName}';
+					car['fromCityCode']='${result.response.fromCity}';
+					car['toCityCode']='${result.response.toCity}';
 					car['toCity']='${cityMapByCode[result.response.toCity].ctyName}';
 					car['name']='${car.carMake} ${car.carModel}';
 					car['logo']='${car.carLogo}';
 					car['type']='CAR';
+					car['checkinDate']='${param.cDepDate}';
 					results.Car[car['id']] = car;	
 					</script>
 					</c:forEach>
@@ -504,7 +514,9 @@
 						    	hotel['rating']=${hotel.starRating};
 						    	hotel['fare']=${hotel.lowestRate};
 						    	hotel['fromCity']='${cityMapByCode[result.response.cityName].ctyName}';
+						    	hotel['toCityCode']='${result.response.cityName}';
 						    	hotel['checkinDate']='${result.response.checkInDate}';
+						    	hotel['checkoutDate']='${result.response.checkOutDate}';
 						    </script>
 							<li data-type="HOTEL" id="${status.index}"><a href="#hotel">
 							<div class="ui-grid-c">
