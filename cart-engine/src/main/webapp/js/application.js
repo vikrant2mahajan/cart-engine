@@ -402,7 +402,7 @@ var getSuggestions=function(){
 		depDate:currentProduct.departureDate,
 		checkinDate:currentProduct.checkinDate,
 		checkoutDate:currentProduct.checkoutDate,
-		geoLoc:'DEL'
+		geoLoc:currentProduct.geoLoc
 		
 	};
 	

@@ -93,6 +93,10 @@
 							flight['toCity']='${cityMapByCode[flight.flightSegmentList[0].destination].ctyName}';
 							flight['fromCityCode']='${flight.flightSegmentList[0].origin}';
 							flight['toCityCode']='${flight.flightSegmentList[0].destination}';
+							flight['geoLoc']='DEL';
+							<c:if test="${not empty param.geoLoc}" >
+								flight['geoLoc']='${param.geoLoc}';
+							</c:if>
 							
 							</script>
 							</c:if>
@@ -279,7 +283,11 @@
 											bus.departureTime = '<fmt:formatDate pattern="hh:mm a"
 																value="${dep}" />';
 																
-											bus['departureDate']='<fmt:formatDate pattern="MM-dd-yyyy" value="${dep}" />';					
+											bus['departureDate']='<fmt:formatDate pattern="MM-dd-yyyy" value="${dep}" />';
+											bus['geoLoc']='DEL';
+											<c:if test="${not empty param.geoLoc}" >
+												bus['geoLoc']='${param.geoLoc}';
+											</c:if>
 											results.BUS['${busitem.tripId}'] = bus;
 										</script>
 
@@ -477,6 +485,10 @@
 					car['logo']='${car.carLogo}';
 					car['type']='CAR';
 					car['checkinDate']='${param.cDepDate}';
+					car['geoLoc']='DEL';
+					<c:if test="${not empty param.geoLoc}" >
+						car['geoLoc']='${param.geoLoc}';
+					</c:if>
 					results.Car[car['id']] = car;	
 					</script>
 					</c:forEach>
@@ -516,6 +528,10 @@
 						    	hotel['toCityCode']='${result.response.cityName}';
 						    	hotel['checkinDate']='${result.response.checkInDate}';
 						    	hotel['checkoutDate']='${result.response.checkOutDate}';
+								hotel['geoLoc']='DEL';
+								<c:if test="${not empty param.geoLoc}" >
+									hotel['geoLoc']='${param.geoLoc}';
+								</c:if>
 						    </script>
 							<li data-type="HOTEL" id="${status.index}"><a href="#hotel">
 							<div class="ui-grid-c">
