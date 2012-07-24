@@ -69,7 +69,7 @@ public class SuggestionService implements ISuggestionService{
 		default:
 			break;
 		}
-		return null;
+		return suggestionList;
 	}
 
 	// Rule1 : Hotel Bases
@@ -88,7 +88,7 @@ public class SuggestionService implements ISuggestionService{
 				//Outstation Car
 				populateCar(request.getCheckinDate(), request.getGeoLoc(),request.getDestination(), suggestionList,"Car to Destination");
 				//Bus
-				populateBus(request.getCheckinDate(),request.getGeoLoc(),request.getDestination(),"Bus to destination?",suggestionList);
+				populateBus(request.getCheckinDate(),request.getGeoLoc(),request.getDestination(),"Bus to destination",suggestionList);
 			}
 		}
 	}
@@ -177,7 +177,7 @@ public class SuggestionService implements ISuggestionService{
 				Suggestion suggestion = new Suggestion();
 				suggestion.setRequest(holder);
 				suggestion.setPrice(busList.get(0).getSeatFare());
-				suggestion.setName(busList.get(0).getBusType());
+				suggestion.setName(busList.get(0).getGroupName());
 				suggestion.setDescription(desc);
 				suggestionList.add(suggestion);
 			}
@@ -247,7 +247,7 @@ public class SuggestionService implements ISuggestionService{
 			populateFlight(req.getDepDate(),"1", req.getGeoLoc(), req.getOrigin(), suggestionList,"You might wanna fly to your car location");
 		}
 		//Hotel on destination -- Done
-		populateHotelOnDestination(req.getDestination(),req.getDepDate(),"1",suggestionList,"Cheapest hotel at destination");
+		populateHotelOnDestination(req.getDestination(),req.getCheckinDate(),"1",suggestionList,"Cheapest hotel at destination");
 	}
 	
 	private void populateHotelOnDestination(String destination,String populateCheckinDate,String noOfAdlt,List<Suggestion> suggestionList, String desc) {
@@ -272,9 +272,11 @@ public class SuggestionService implements ISuggestionService{
 		holder.setRequest(request);
 		holder.setIp("DEL");
 		ResponseHolder holder2 = searchService.search(holder);
+		
 		Suggestion suggestion = new Suggestion();
 		suggestion.setRequest(holder);
 		HotelRS response = (HotelRS) holder2.getResponse();
+		if(response!=null && response.getHotels()!=null && response.getHotels().size()>0){
 //		List<Hotel> threeStarHotelRating  = populateHotelList(response.getHotels());
 		Collections.sort(response.getHotels(), new HotelPriceComparator());
 		suggestion.setPrice(response.getHotels().get(0).getLowestRate());
@@ -282,6 +284,7 @@ public class SuggestionService implements ISuggestionService{
 		suggestion.setName(response.getHotels().get(0).getHotelName());
 		suggestion.setDescription(desc);
 		suggestionList.add(suggestion);
+		}
 	}
 
 	private List<Hotel> populateHotelList(List<Hotel> hotels) {
