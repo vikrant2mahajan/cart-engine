@@ -69,7 +69,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed" >
-			     <h1></h1>
+			     <h1>&copy; 2012 MakeMyTrip.com. All Rights Reserved.</h1>
 		</div>
     </div>
 
@@ -78,7 +78,7 @@
 	<div data-role="page" id="flights" data-theme="b"
 		data-content-theme="b">
 		<div data-role="header" data-theme="b">
-			<h1>Flights</h1>
+			<h1>Flights Search</h1>
 			<a href="#one" data-rel="back" data-role="button" data-inline="true"
 				data-icon="back">Back</a>
 		</div>
@@ -138,7 +138,7 @@
 				<div style="height: 4px;">
 					<p>&nbsp;</p>
 				</div>
-				<div class="ui-grid-b">
+				<div class="ui-grid-c rows">
 						<div class="ui-block-a">
 							<label for="fadultCount" class="ui-input-text">Adults:</label> <input
 								type="number" name="fadultCount" id="fadultCount" value=""
@@ -175,7 +175,7 @@
 
 		</div>
 		<div data-role="footer" data-theme="b" data-theme="c">
-			<h4>Flights Footer</h4>
+			<h4></h4>
 		</div>
 		<!-- /footer -->
 	</div>
@@ -185,7 +185,7 @@
 		<div data-role="header" data-theme="b">
 			<a href="#one" data-rel="back" data-role="button" data-inline="true"
 				data-icon="back">Back</a>
-			<h1>Hotels</h1>
+			<h1>Hotels Search</h1>
 		</div>
 		<!-- /header -->
 		<div data-role="content">
@@ -221,7 +221,7 @@
 				</div>
 
 				<div>
-					<label for="hCheckOutDate">Check Out Date</label> <input
+					<label for="hCheckOutDate">Check Out Date</label> <input 
 						name="hCheckOutDate" id="hCheckOutDate" type="date"
 						data-role="datebox" data-options='{"mode":"calbox"}' class="validate[required]">
 				</div>
@@ -230,7 +230,7 @@
 					<p>&nbsp;</p>
 				</div>
 				
-				<div class="ui-grid-b">
+				<div class="ui-grid-b rows">
 
 					<div class="ui-block-b">
 						<label for="hadultcount" class="ui-input-text">Adults:</label> <input
@@ -251,7 +251,7 @@
 
 		</div>
 		<div data-role="footer" data-theme="b" data-position="fixed">
-			<h4>Hotels Footer</h4>
+			<h4></h4>
 		</div>
 		<!-- /footer -->
 	</div>
@@ -260,7 +260,7 @@
 	<div data-role="page" id="bus" data-theme="b" data-content-theme="c">
 		<div data-role="header" data-theme="b">
 			<a href="#one" data-rel="back" data-role="button" data-icon="back">Back</a>
-			<h1>Bus</h1>
+			<h1>Bus Search</h1>
 		</div>
 		<!-- /header -->
 
@@ -315,7 +315,7 @@
 		</div>
 
 		<div data-role="footer" data-theme="b"  data-position="fixed">
-			<h4>Bus Footer</h4>
+			<h4></h4>
 		</div>
 		<!-- /footer -->
 
@@ -325,7 +325,7 @@
 	<div data-role="page" id="car" data-theme="b" data-content-theme="c">
 		<div data-role="header" data-theme="b">
 			<a href="#one" data-rel="back" data-role="button" data-icon="back">Back</a>
-			<h1>Car</h1>
+			<h1>Car Search</h1>
 		</div>
 		<!-- /header -->
 		<div data-role="content">
@@ -375,7 +375,7 @@
 			</form>
 		</div>
 		<div data-role="footer" data-theme="b" data-position="fixed">
-			<h4>Car Footer</h4>
+			<h4></h4>
 		</div>
 		<!-- /footer -->
 	</div>
